@@ -2,18 +2,21 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\OrderController;
 
-// Authentication
+// ================== Authentication ==================
 Route::controller(AuthController::class)->group(function () {
     Route::get('/register', 'viewregister')->name('register');
     Route::post('/register', 'inRegister');
     Route::get('/login', 'viewLogin')->name('login');
     Route::post('/login', 'inLogin');
-    Route::get('/logout', 'logout');
+    Route::get('/logout', 'logout')->name('logout');
 });
 
-// Home
+// ================== Home & Produk ==================
 Route::get('/', function (Request $request) {
     // Dummy produk
     $products = [
@@ -41,13 +44,13 @@ Route::get('/', function (Request $request) {
 
     return view('home', [
         'products' => $filtered,
-        'search' => $search,
+        'search'   => $search,
         'category' => $category,
-        'cart' => $cart,
+        'cart'     => $cart,
     ]);
 })->name('home');
 
-// Tambah ke keranjang
+// ================== Cart ==================
 Route::post('/cart/add', function (Request $request) {
     $id = $request->input('id');
     $name = $request->input('name');
@@ -71,7 +74,6 @@ Route::post('/cart/add', function (Request $request) {
     return redirect()->route('home');
 })->name('cart.add');
 
-// Hapus item dari keranjang
 Route::post('/cart/remove', function (Request $request) {
     $id = $request->input('id');
     $cart = session('cart', []);
@@ -80,20 +82,27 @@ Route::post('/cart/remove', function (Request $request) {
     return redirect()->route('home');
 })->name('cart.remove');
 
+// ================== Admin ==================
+Route::get('/admin', function () {
+    return view('admin.dashboard');
+})->middleware(['auth']);
 
-// ========Keranjang=======
+Route::prefix('/admin')->group(function () {
+    // Produk
+    Route::resource('products', ProductController::class);
 
+    // Pesanan
+    Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::patch('orders/{id}/status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
 
+    // Dashboard
+    Route::get('dashboard', [OrderController::class, 'dashboard'])->name('admin.dashboard');
+});
 
-    // ========CheckOut========
-
-
-
-
-
-    // ========CheckOut========
-
-// ========Keranjang=======
-
-
+Route::post('/logout', function () {
+    Auth::logout();
+    request()->session()->invalidate();
+    request()->session()->regenerateToken();
+    return redirect('/login');
+})->name('logout');
 

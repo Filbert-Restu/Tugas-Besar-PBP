@@ -19,7 +19,7 @@
         </div>
 
         <!-- Form Pencarian -->
-        <form method="GET" action="{{ route('home') }}" class="flex flex-col md:flex-row gap-4 mb-6 justify-center">
+        <form method="GET" action="{{ route('dashboard') }}" class="flex flex-col md:flex-row gap-4 mb-6 justify-center">
             <input type="text" name="search" placeholder="Cari produk..." value="{{ $search }}"
                    class="w-full md:w-1/3 rounded-lg border-gray-300 shadow-sm">
 

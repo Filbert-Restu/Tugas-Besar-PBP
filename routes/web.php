@@ -17,7 +17,7 @@ Route::controller(AuthController::class)->group(function () {
 });
 
 // ================== Home & Produk ==================
-Route::get('/', function (Request $request) {
+Route::get('/dashboard', function (Request $request) {
     // Dummy produk
     $products = [
         ['id' => 1, 'name' => 'Laptop Asus', 'category' => 'Elektronik'],
@@ -42,13 +42,13 @@ Route::get('/', function (Request $request) {
     // Ambil keranjang dari session
     $cart = session('cart', []);
 
-    return view('home', [
+    return view('dashboard', [
         'products' => $filtered,
         'search'   => $search,
         'category' => $category,
         'cart'     => $cart,
     ]);
-})->name('home');
+})->name('dashboard');
 
 // ================== Cart ==================
 Route::post('/cart/add', function (Request $request) {
@@ -71,7 +71,7 @@ Route::post('/cart/add', function (Request $request) {
     }
 
     session(['cart' => $cart]);
-    return redirect()->route('home');
+    return redirect()->route('dashboard');
 })->name('cart.add');
 
 Route::post('/cart/remove', function (Request $request) {
@@ -79,7 +79,7 @@ Route::post('/cart/remove', function (Request $request) {
     $cart = session('cart', []);
     unset($cart[$id]);
     session(['cart' => $cart]);
-    return redirect()->route('home');
+    return redirect()->route('dashboard');
 })->name('cart.remove');
 
 // ================== Admin ==================

@@ -13,17 +13,19 @@ Route::controller(AuthController::class)->group(function () {
     Route::get('/logout', 'logout');
 });
 
+// Define produk sebagai constant
+define('DUMMY_PRODUCTS', [
+    ['id' => 1, 'name' => 'Laptop Asus', 'category' => 'Elektronik'],
+    ['id' => 2, 'name' => 'iPhone 15', 'category' => 'Elektronik'],
+    ['id' => 3, 'name' => 'Meja Belajar', 'category' => 'Furniture'],
+    ['id' => 4, 'name' => 'Kursi Gaming', 'category' => 'Furniture'],
+    ['id' => 5, 'name' => 'Sepatu Nike', 'category' => 'Fashion'],
+    ['id' => 6, 'name' => 'Kaos Polos', 'category' => 'Fashion'],
+]);
+
 // Home
 Route::get('/', function (Request $request) {
-    // Dummy produk
-    $products = [
-        ['id' => 1, 'name' => 'Laptop Asus', 'category' => 'Elektronik'],
-        ['id' => 2, 'name' => 'iPhone 15', 'category' => 'Elektronik'],
-        ['id' => 3, 'name' => 'Meja Belajar', 'category' => 'Furniture'],
-        ['id' => 4, 'name' => 'Kursi Gaming', 'category' => 'Furniture'],
-        ['id' => 5, 'name' => 'Sepatu Nike', 'category' => 'Fashion'],
-        ['id' => 6, 'name' => 'Kaos Polos', 'category' => 'Fashion'],
-    ];
+    $products = DUMMY_PRODUCTS;
 
     // Ambil query pencarian
     $search = $request->input('search');
@@ -96,4 +98,10 @@ Route::post('/cart/remove', function (Request $request) {
 // ========Keranjang=======
 
 
+// ADMIN / SELLER
 
+// Katalog Produk 
+Route::get("/catalog", function() {
+    $products = DUMMY_PRODUCTS; // Pake constant yang sama
+    return view("catalog", compact('products'));
+})->name('catalog');

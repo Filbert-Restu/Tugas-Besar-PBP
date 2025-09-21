@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Category;
-use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
@@ -29,15 +29,8 @@ class ProductController extends Controller
             'category_id' => 'required|exists:categories,id',
         ]);
 
-        Product::create([
-            'name'        => $request->name,
-            'price'       => $request->price,
-            'stock'       => $request->stock,
-            'category_id' => $request->category_id,
-            'is_active'   => $request->has('is_active'),
-        ]);
-
-        return redirect()->route('products.index')->with('success', 'Produk berhasil ditambahkan.');
+        Product::create($request->all());
+        return redirect()->route('products.index')->with('success', 'Produk berhasil ditambahkan');
     }
 
     public function edit(Product $product)
@@ -55,20 +48,13 @@ class ProductController extends Controller
             'category_id' => 'required|exists:categories,id',
         ]);
 
-        $product->update([
-            'name'        => $request->name,
-            'price'       => $request->price,
-            'stock'       => $request->stock,
-            'category_id' => $request->category_id,
-            'is_active'   => $request->has('is_active'),
-        ]);
-
-        return redirect()->route('products.index')->with('success', 'Produk berhasil diperbarui.');
+        $product->update($request->all());
+        return redirect()->route('products.index')->with('success', 'Produk berhasil diperbarui');
     }
 
     public function destroy(Product $product)
     {
         $product->delete();
-        return redirect()->route('products.index')->with('success', 'Produk berhasil dihapus.');
+        return redirect()->route('products.index')->with('success', 'Produk berhasil dihapus');
     }
 }

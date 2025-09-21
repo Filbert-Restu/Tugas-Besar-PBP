@@ -12,21 +12,21 @@
         </a>
       </li>
       <li>
-        <a href="{{ route('products.index') }}" 
+        <a href="{{ route('admin.products.index') }}" 
            class="flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 
                   {{ request()->is('admin/products*') ? 'bg-blue-500 text-white' : 'text-gray-700 dark:text-white' }}">
           🛒 <span class="ml-2">Produk</span>
         </a>
       </li>
       <li>
-        <a href="{{ route('orders.index') }}" 
+        <a href="{{ route('admin.orders.index') }}" 
            class="flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 
                   {{ request()->is('admin/orders*') ? 'bg-blue-500 text-white' : 'text-gray-700 dark:text-white' }}">
           📦 <span class="ml-2">Pesanan</span>
         </a>
       </li>
       <li>
-        <a href="{{ route('admin.users') }}" 
+        <a href="{{ route('admin.users.index') }}" 
            class="flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 
                   {{ request()->is('admin/users*') ? 'bg-blue-500 text-white' : 'text-gray-700 dark:text-white' }}">
           👥 <span class="ml-2">Users</span>

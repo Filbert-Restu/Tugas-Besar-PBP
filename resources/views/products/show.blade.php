@@ -2,36 +2,53 @@
 
 @section('title', $product->name)
 
-@section('breadcrumb')
-<a href="{{ route('products.index') }}">Produk</a> / <span>{{ $product->name }}</span>
-@endsection
-
 @section('content')
-<div class="max-w-4xl mx-auto bg-white p-6 rounded shadow-md grid grid-cols-1 md:grid-cols-2 gap-6">
-    <!-- Gambar -->
-    <div>
-        <img src="{{ $product->image_url ?? 'https://via.placeholder.com/300' }}" 
-             alt="{{ $product->name }}" 
-             class="rounded-md shadow-md w-full mb-4">
-        <div class="flex space-x-2">
-            <img src="{{ $product->image_url ?? 'https://via.placeholder.com/100' }}" class="w-20 h-20 object-cover rounded">
-            <img src="{{ $product->image_url ?? 'https://via.placeholder.com/100' }}" class="w-20 h-20 object-cover rounded">
-        </div>
-    </div>
+<div class="container mx-auto py-8">
+    <h1 class="text-3xl font-bold mb-4">{{ $product->name }}</h1>
+    <p class="text-gray-700 mb-2">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
+    <p class="mb-6">{{ $product->description }}</p>
 
-    <!-- Detail -->
-    <div>
-        <h1 class="text-2xl font-bold mb-2">{{ $product->name }}</h1>
-        <p class="text-gray-600 mb-4">Kategori: {{ $product->category->name ?? '-' }}</p>
-        <p class="text-lg font-semibold text-blue-600 mb-4">Rp {{ number_format($product->price,0,',','.') }}</p>
-        <p class="mb-4">Stok: {{ $product->stock }}</p>
-
+    @auth
         <form action="{{ route('cart.add', $product->id) }}" method="POST">
             @csrf
-            <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-                + Tambah ke Keranjang
+            <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">
+                Tambah ke Cart
             </button>
         </form>
+    @endauth
+
+    @guest
+        <button onclick="openLoginModal()" 
+                class="bg-gray-500 text-white px-4 py-2 rounded">
+            Tambah ke Cart
+        </button>
+    @endguest
+</div>
+
+<!-- Modal untuk Guest -->
+<div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center">
+    <div class="bg-white p-6 rounded shadow-lg w-80 text-center">
+        <h2 class="text-lg font-bold mb-4">Login Diperlukan</h2>
+        <p class="mb-4">Untuk menambahkan ke keranjang, silakan login atau buat akun terlebih dahulu.</p>
+        
+        <div class="flex flex-col space-y-2">
+            <a href="{{ route('login') }}" 
+               class="bg-blue-500 text-white px-4 py-2 rounded">Login</a>
+            <a href="{{ route('register') }}" 
+               class="bg-green-500 text-white px-4 py-2 rounded">Register</a>
+            <button onclick="closeLoginModal()" 
+                    class="bg-gray-400 text-white px-4 py-2 rounded">Nanti Saja</button>
+        </div>
     </div>
 </div>
+
+<script>
+    function openLoginModal() {
+        document.getElementById('loginModal').classList.remove('hidden');
+        document.getElementById('loginModal').classList.add('flex');
+    }
+    function closeLoginModal() {
+        document.getElementById('loginModal').classList.add('hidden');
+    }
+</script>
 @endsection

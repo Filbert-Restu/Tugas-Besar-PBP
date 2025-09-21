@@ -30,7 +30,8 @@ class ProductController extends Controller
         ]);
 
         Product::create($request->all());
-        return redirect()->route('products.index')->with('success', 'Produk berhasil ditambahkan');
+
+        return redirect()->route('admin.products.index')->with('success', 'Produk berhasil ditambahkan');
     }
 
     public function edit(Product $product)
@@ -49,12 +50,14 @@ class ProductController extends Controller
         ]);
 
         $product->update($request->all());
-        return redirect()->route('products.index')->with('success', 'Produk berhasil diperbarui');
+
+        return redirect()->route('admin.products.index')->with('success', 'Produk berhasil diperbarui');
     }
 
     public function destroy(Product $product)
     {
         $product->delete();
-        return redirect()->route('products.index')->with('success', 'Produk berhasil dihapus');
+
+        return redirect()->route('admin.products.index')->with('success', 'Produk berhasil dihapus');
     }
 }

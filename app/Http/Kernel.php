@@ -7,7 +7,11 @@ use Illuminate\Foundation\Http\Kernel as HttpKernel;
 class Kernel extends HttpKernel
 {
     protected $routeMiddleware = [
-        // ...
-        'admin' => \App\Http\Middleware\AdminMiddleware::class,
+        // default bawaan
+        'auth' => \App\Http\Middleware\Authenticate::class,
+
+        // tambahkan ini
+        'is_admin' => \App\Http\Middleware\IsAdmin::class,
     ];
+
 }

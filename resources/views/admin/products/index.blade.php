@@ -1,52 +1,78 @@
-@extends('layouts.admin')
-
-@section('title', 'Produk')
+@extends('admin.layouts.admin')
 
 @section('content')
-<div class="flex justify-between items-center mb-4">
-  <h1 class="text-2xl font-bold">Produk</h1>
-  <a href="{{ route('products.create') }}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">+ Tambah Produk</a>
-</div>
+<div class="p-6">
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl font-bold text-gray-800 dark:text-purple-900">📦 Daftar Produk</h2>
+        <a href="{{ route('admin.products.create') }}" 
+           class="px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700">
+           + Tambah Produk
+        </a>
+    </div>
 
-<div class="bg-white shadow rounded-xl p-4">
-  <table class="w-full border-collapse">
-    <thead>
-      <tr class="bg-gray-100 text-left">
-        <th class="p-2">ID</th>
-        <th class="p-2">Nama</th>
-        <th class="p-2">Harga</th>
-        <th class="p-2">Stok</th>
-        <th class="p-2">Kategori</th>
-        <th class="p-2">Status</th>
-        <th class="p-2">Aksi</th>
-      </tr>
-    </thead>
-    <tbody>
-      @foreach($products as $product)
-      <tr class="border-b">
-        <td class="p-2">{{ $product->id }}</td>
-        <td class="p-2">{{ $product->name }}</td>
-        <td class="p-2">Rp {{ number_format($product->price,0,',','.') }}</td>
-        <td class="p-2">{{ $product->stock }}</td>
-        <td class="p-2">{{ $product->category->name ?? '-' }}</td>
-        <td class="p-2">
-          @if($product->is_active)
-            <span class="px-2 py-1 bg-green-200 text-green-800 rounded-full text-sm">Aktif</span>
-          @else
-            <span class="px-2 py-1 bg-red-200 text-red-800 rounded-full text-sm">Nonaktif</span>
-          @endif
-        </td>
-        <td class="p-2">
-          <a href="{{ route('products.edit', $product->id) }}" class="text-blue-600">Edit</a> |
-          <form action="{{ route('products.destroy', $product->id) }}" method="POST" class="inline">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="text-red-600" onclick="return confirm('Hapus produk ini?')">Hapus</button>
-          </form>
-        </td>
-      </tr>
-      @endforeach
-    </tbody>
-  </table>
+    <!-- Alert -->
+    @if(session('success'))
+        <div class="mb-4 p-3 text-sm text-green-700 bg-green-100 rounded-lg">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    <!-- Table -->
+    <div class="overflow-x-auto bg-white dark:bg-gray-900 shadow-md rounded-lg">
+        <table class="w-full border-collapse">
+            <thead class="bg-gray-100 dark:bg-gray-800">
+                <tr>
+                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600 dark:text-gray-300">#</th>
+                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600 dark:text-gray-300">Nama</th>
+                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600 dark:text-gray-300">Kategori</th>
+                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600 dark:text-gray-300">Harga</th>
+                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600 dark:text-gray-300">Stok</th>
+                    <th class="px-4 py-3 text-center text-sm font-semibold text-gray-600 dark:text-gray-300">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($products as $product)
+                <tr class="border-b hover:bg-gray-50 dark:hover:bg-gray-800">
+                    <td class="px-4 py-3 text-sm text-gray-700 dark:text-gray-200">{{ $loop->iteration }}</td>
+                    <td class="px-4 py-3 text-sm text-gray-700 dark:text-gray-200">{{ $product->name }}</td>
+                    <td class="px-4 py-3">
+                        <span class="px-2 py-1 text-xs font-medium text-blue-700 bg-blue-100 rounded dark:bg-blue-800 dark:text-blue-200">
+                            {{ $product->category ? $product->category->name : '-' }}
+                        </span>
+                    </td>
+                    <td class="px-4 py-3 text-sm font-semibold text-green-600 dark:text-green-400">
+                        Rp {{ number_format($product->price, 0, ',', '.') }}
+                    </td>
+                    <td class="px-4 py-3 text-sm text-gray-700 dark:text-gray-200">{{ $product->stock }}</td>
+                    <td class="px-4 py-3 text-center flex gap-2 justify-center">
+                        <a href="{{ route('admin.products.edit', $product) }}" 
+                           class="px-3 py-1 text-xs font-semibold text-white bg-yellow-500 rounded hover:bg-yellow-600">
+                           Edit
+                        </a>
+                        <form action="{{ route('admin.products.destroy', $product) }}" method="POST" onsubmit="return confirm('Yakin hapus produk ini?')">
+                            @csrf @method('DELETE')
+                            <button type="submit" 
+                                    class="px-3 py-1 text-xs font-semibold text-white bg-red-600 rounded hover:bg-red-700">
+                                Hapus
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="6" class="px-4 py-6 text-center text-gray-500 dark:text-gray-400">
+                        Belum ada produk
+                    </td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="mt-4">
+        {{ $products->links() }}
+    </div>
 </div>
 @endsection

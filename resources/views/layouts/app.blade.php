@@ -1,54 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>@yield('title', config('app.name'))</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@yield('title', 'UMKM Mini-Commerce')</title>
     @vite('resources/css/app.css')
 </head>
-<body class="bg-gray-100 min-h-screen flex flex-col">
+<body class="bg-gray-100">
 
-    <!-- Navbar -->
-    <nav class="bg-white shadow-md px-6 py-3 flex justify-between items-center">
-        <a href="{{ route('landing') }}" class="text-xl font-bold text-blue-600">UMKM Mini-Commerce</a>
-        <div class="space-x-4">
-            <a href="{{ route('products.index') }}" class="hover:text-blue-500">Produk</a>
-            @auth
-                <a href="{{ route('cart.index') }}" class="hover:text-blue-500">Keranjang</a>
-                <form action="{{ route('logout') }}" method="POST" class="inline">
-                    @csrf
-                    <button class="hover:text-red-500">Logout</button>
-                </form>
-            @else
-                <a href="{{ route('login') }}" class="hover:text-blue-500">Login</a>
-                <a href="{{ route('register') }}" class="hover:text-blue-500">Register</a>
-            @endauth
+    {{-- Navbar --}}
+    <nav class="bg-white shadow px-6 py-4">
+        <div class="flex justify-between items-center">
+            <a href="{{ route('landing') }}" class="text-xl font-bold text-blue-600">
+                UMKM Mini-Commerce
+            </a>
+            <div class="space-x-4">
+                @auth
+                    <a href="{{ route('cart.index') }}" class="text-gray-700">Cart</a>
+                    <form method="POST" action="{{ route('login') }}" class="inline">
+                        @csrf
+                        <button type="submit" class="text-red-600">Login</button>
+                    </form>
+                @endauth
+                @guest
+                    <a href="{{ route('login') }}" class="text-gray-700">Login</a>
+                    <a href="{{ route('register') }}" class="text-gray-700">Register</a>
+                @endguest
+            </div>
         </div>
     </nav>
 
-    <!-- Alert -->
-    @if(session('success'))
-        <div class="bg-green-100 text-green-800 p-3 text-center">
-            {{ session('success') }}
-        </div>
-    @elseif(session('error'))
-        <div class="bg-red-100 text-red-800 p-3 text-center">
-            {{ session('error') }}
-        </div>
-    @endif
-
-    <!-- Breadcrumb -->
-    <div class="bg-gray-50 px-6 py-2 text-sm text-gray-600">
-        @yield('breadcrumb')
-    </div>
-
-    <!-- Main Content -->
-    <main class="flex-1 p-6">
+    {{-- Main Content --}}
+    <main class="p-6">
         @yield('content')
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-white border-t text-center py-4 text-sm text-gray-500">
-        &copy; {{ date('Y') }} UMKM Mini-Commerce. All rights reserved.
+    {{-- Footer --}}
+    <footer class="bg-gray-200 text-center py-4 mt-8">
+        <p>&copy; {{ date('Y') }} UMKM Mini-Commerce</p>
     </footer>
+
 </body>
 </html>

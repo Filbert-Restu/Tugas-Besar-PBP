@@ -7,6 +7,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
 
 // Landing Page
@@ -40,10 +41,11 @@ Route::middleware('auth')->group(function () {
 });
 
 // Admin Dashboard & fitur
-Route::prefix('admin')->middleware(['auth'])->group(function () {
-    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+Route::prefix('admin')->middleware(['auth'])->name('admin.')->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
     Route::resource('products', ProductController::class)->except(['show']);
     Route::resource('categories', CategoryController::class);
+    Route::resource('users', UserController::class); 
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::patch('/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
 });

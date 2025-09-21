@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('admin.layouts.admin')
 
 @section('title', 'Pesanan')
 
@@ -35,7 +35,7 @@
         </td>
         <td class="p-2">{{ $order->created_at->format('d M Y H:i') }}</td>
         <td class="p-2">
-          <form method="POST" action="{{ route('orders.updateStatus', $order->id) }}">
+          <form method="POST" action="{{ route('admin.orders.updateStatus', $order->id) }}">
             @csrf
             @method('PATCH')
             <select name="status" onchange="this.form.submit()" class="border rounded p-1">

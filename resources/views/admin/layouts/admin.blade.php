@@ -9,10 +9,10 @@
 <body class="bg-gray-100">
 
   <!-- Navbar -->
-  @include('layouts.navbar')
+  @include('admin.layouts.navbar')
 
   <!-- Sidebar -->
-  @include('layouts.sidebar')
+  @include('admin.layouts.sidebar')
 
   <!-- Main Content -->
   <div class="pt-16 sm:ml-64">
@@ -23,3 +23,5 @@
 
 </body>
 </html>
+
+

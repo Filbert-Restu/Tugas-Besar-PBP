@@ -65,7 +65,7 @@
   </div>
 @endsection --}}
 
-@extends('layouts.admin')
+@extends('admin.layouts.admin')
 
 @section('title', 'Dashboard Admin')
 

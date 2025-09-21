@@ -1,108 +1,49 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DashboardController;
 
-// ================== Authentication ==================
-Route::controller(AuthController::class)->group(function () {
-    Route::get('/register', 'viewregister')->name('register');
-    Route::post('/register', 'inRegister');
-    Route::get('/login', 'viewLogin')->name('login');
-    Route::post('/login', 'inLogin');
-    Route::get('/logout', 'logout')->name('logout');
+// Landing Page
+Route::get('/', function () {
+    return view('landing');
+})->name('landing');
+
+// Auth
+Route::get('/login', [AuthController::class, 'viewLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'inLogin']);
+Route::get('/register', [AuthController::class, 'viewRegister'])->name('register');
+Route::post('/register', [AuthController::class, 'inRegister']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// Produk (umum + detail)
+Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+
+// User Dashboard & fitur
+Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('user.dashboard');
+
+    // Cart
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
+    Route::delete('/cart/remove/{product}', [CartController::class, 'remove'])->name('cart.remove');
+
+    // Orders
+    Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
+    Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
 });
 
-// ================== Home & Produk ==================
-Route::get('/dashboard', function (Request $request) {
-    // Dummy produk
-    $products = [
-        ['id' => 1, 'name' => 'Laptop Asus', 'category' => 'Elektronik'],
-        ['id' => 2, 'name' => 'iPhone 15', 'category' => 'Elektronik'],
-        ['id' => 3, 'name' => 'Meja Belajar', 'category' => 'Furniture'],
-        ['id' => 4, 'name' => 'Kursi Gaming', 'category' => 'Furniture'],
-        ['id' => 5, 'name' => 'Sepatu Nike', 'category' => 'Fashion'],
-        ['id' => 6, 'name' => 'Kaos Polos', 'category' => 'Fashion'],
-    ];
-
-    // Ambil query pencarian
-    $search = $request->input('search');
-    $category = $request->input('category');
-
-    // Filter produk
-    $filtered = array_filter($products, function ($product) use ($search, $category) {
-        $matchName = !$search || stripos($product['name'], $search) !== false;
-        $matchCategory = !$category || stripos($product['category'], $category) !== false;
-        return $matchName && $matchCategory;
-    });
-
-    // Ambil keranjang dari session
-    $cart = session('cart', []);
-
-    return view('dashboard', [
-        'products' => $filtered,
-        'search'   => $search,
-        'category' => $category,
-        'cart'     => $cart,
-    ]);
-})->name('dashboard');
-
-// ================== Cart ==================
-Route::post('/cart/add', function (Request $request) {
-    $id = $request->input('id');
-    $name = $request->input('name');
-    $category = $request->input('category');
-
-    $cart = session('cart', []);
-
-    // kalau produk sudah ada, tambah qty
-    if (isset($cart[$id])) {
-        $cart[$id]['qty']++;
-    } else {
-        $cart[$id] = [
-            'id' => $id,
-            'name' => $name,
-            'category' => $category,
-            'qty' => 1,
-        ];
-    }
-
-    session(['cart' => $cart]);
-    return redirect()->route('dashboard');
-})->name('cart.add');
-
-Route::post('/cart/remove', function (Request $request) {
-    $id = $request->input('id');
-    $cart = session('cart', []);
-    unset($cart[$id]);
-    session(['cart' => $cart]);
-    return redirect()->route('dashboard');
-})->name('cart.remove');
-
-// ================== Admin ==================
-Route::get('/admin', function () {
-    return view('admin.dashboard');
-})->middleware(['auth']);
-
-Route::prefix('/admin')->group(function () {
-    // Produk
-    Route::resource('products', ProductController::class);
-
-    // Pesanan
-    Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
-    Route::patch('orders/{id}/status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
-
-    // Dashboard
-    Route::get('dashboard', [OrderController::class, 'dashboard'])->name('admin.dashboard');
+// Admin Dashboard & fitur
+Route::prefix('admin')->middleware(['auth'])->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    Route::resource('products', ProductController::class)->except(['show']);
+    Route::resource('categories', CategoryController::class);
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::patch('/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
 });
-
-Route::post('/logout', function () {
-    Auth::logout();
-    request()->session()->invalidate();
-    request()->session()->regenerateToken();
-    return redirect('/login');
-})->name('logout');
-

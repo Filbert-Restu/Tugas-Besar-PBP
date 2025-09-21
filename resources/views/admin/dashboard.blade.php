@@ -1,10 +1,10 @@
-@extends('layouts.admin')
+{{-- @extends('layouts.admin')
 
 @section('title', 'Dashboard')
 
 @section('content')
-  <!-- isi dashboard kamu tadi -->
-  <div class="p-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+  <!-- Ringkasan -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
     <div class="bg-white shadow rounded-xl p-4">
       <h2 class="text-gray-500">Total Produk</h2>
       <p class="text-2xl font-bold">{{ $totalProduk }}</p>
@@ -19,6 +19,7 @@
     </div>
   </div>
 
+  <!-- Pesanan Terbaru -->
   <div class="mt-6 bg-white shadow rounded-xl p-4">
     <h2 class="text-lg font-semibold mb-4">Pesanan Terbaru</h2>
     <table class="w-full border-collapse">
@@ -62,5 +63,20 @@
       </tbody>
     </table>
   </div>
+@endsection --}}
 
+@extends('layouts.admin')
+
+@section('title', 'Dashboard Admin')
+
+@section('breadcrumb')
+<a href="{{ route('admin.dashboard') }}">Dashboard</a>
+@endsection
+
+@section('content')
+<div class="grid grid-cols-3 gap-4">
+    <div class="bg-white p-4 shadow rounded">Total Produk: {{ $totalProduk }}</div>
+    <div class="bg-white p-4 shadow rounded">Total Pesanan: {{ $totalPesanan }}</div>
+    <div class="bg-white p-4 shadow rounded">Total User: {{ $totalUser }}</div>
+</div>
 @endsection

@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - {{ config('app.name') }}</title>
+    <title>@yield('title', 'Admin - '.config('app.name'))</title>
     @vite('resources/css/app.css')
 </head>
 <body class="bg-gray-100 flex">
@@ -14,44 +13,47 @@
             <h1 class="text-xl font-bold text-blue-600">Admin Panel</h1>
         </div>
         <nav class="p-4 space-y-2">
-            <a href="{{ route('admin.dashboard') }}"
-                class="flex items-center px-3 py-2 rounded-lg hover:bg-blue-100 {{ request()->routeIs('admin.dashboard') ? 'bg-blue-500 text-white' : 'text-gray-700' }}">
-                📊 <span class="ml-2">Dashboard</span>
-            </a>
-            <a href="{{ route('products.index') }}"
-                class="flex items-center px-3 py-2 rounded-lg hover:bg-blue-100 {{ request()->is('admin/products*') ? 'bg-blue-500 text-white' : 'text-gray-700' }}">
-                🛒 <span class="ml-2">Produk</span>
-            </a>
-            <a href="{{ route('orders.index') }}"
-                class="flex items-center px-3 py-2 rounded-lg hover:bg-blue-100 {{ request()->is('admin/orders*') ? 'bg-blue-500 text-white' : 'text-gray-700' }}">
-                📦 <span class="ml-2">Pesanan</span>
-            </a>
-            <a href="#"
-                class="flex items-center px-3 py-2 rounded-lg hover:bg-blue-100 text-gray-700">
-                👥 <span class="ml-2">Users</span>
-            </a>
+            <a href="{{ route('admin.dashboard') }}" class="block px-3 py-2 hover:bg-blue-100">Dashboard</a>
+            <a href="{{ route('products.index') }}" class="block px-3 py-2 hover:bg-blue-100">Produk</a>
+            <a href="{{ route('categories.index') }}" class="block px-3 py-2 hover:bg-blue-100">Kategori</a>
+            <a href="{{ route('orders.index') }}" class="block px-3 py-2 hover:bg-blue-100">Pesanan</a>
         </nav>
     </aside>
 
     <!-- Main Content -->
-    <div class="ml-64 flex-1">
-        <!-- Header -->
-        <header class="bg-white shadow-md p-4 flex justify-between items-center">
+    <div class="ml-64 flex-1 flex flex-col">
+        <!-- Navbar -->
+        <header class="bg-white shadow p-4 flex justify-between items-center">
             <h2 class="text-lg font-semibold">@yield('title', 'Admin')</h2>
-            <div class="flex items-center space-x-3">
-                <span class="text-gray-700">Halo, Admin</span>
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg">Logout</button>
-                </form>
-            </div>
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button class="bg-red-500 text-white px-3 py-1 rounded">Logout</button>
+            </form>
         </header>
 
-        <!-- Page Content -->
-        <main class="p-6">
+        <!-- Alert -->
+        @if(session('success'))
+            <div class="bg-green-100 text-green-800 p-3 text-center">
+                {{ session('success') }}
+            </div>
+        @elseif(session('error'))
+            <div class="bg-red-100 text-red-800 p-3 text-center">
+                {{ session('error') }}
+            </div>
+        @endif
+
+        <!-- Breadcrumb -->
+        <div class="bg-gray-50 px-6 py-2 text-sm text-gray-600">
+            @yield('breadcrumb')
+        </div>
+
+        <main class="flex-1 p-6">
             @yield('content')
         </main>
-    </div>
 
+        <footer class="bg-white border-t text-center py-4 text-sm text-gray-500">
+            &copy; {{ date('Y') }} Admin Panel
+        </footer>
+    </div>
 </body>
 </html>

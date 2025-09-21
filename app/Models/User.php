@@ -49,8 +49,13 @@ class User extends Authenticatable
     /**
      * Relasi: User punya banyak Order
      */
+    public function cart()
+    {
+        return $this->hasOne(\App\Models\Cart::class);
+    }
+
     public function orders()
     {
-        return $this->hasMany(Order::class);
+        return $this->hasMany(\App\Models\Order::class);
     }
 }

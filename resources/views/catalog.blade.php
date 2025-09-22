@@ -13,7 +13,7 @@
     <!-- Header -->
     <div class="flex justify-between gap-3 mb-5">
       <h1 class="m-0 text-4xl font-bold">Produk Saya</h1>
-      <a href=""><div class="bg-white border border-gray-200 rounded-xl px-4 py-3 shadow-sm">
+      <a href="{{ route('addproduct') }}"><div class="bg-white border border-gray-200 rounded-xl px-4 py-3 shadow-sm">
         <strong>+ Tambah Produk Baru</strong><br />
       </div></a>
     </div>
@@ -25,7 +25,7 @@
       <div class="border-b border-gray-200">
         <div id="tabs" class="flex overflow-x-auto whitespace-nowrap">
           <a href="#" data-tab="all"
-             class="tab px-4 py-2 font-semibold text-red-500 border-b-2 border-transparent hover:bg-gray-50">
+             class="tab px-4 py-2 font-semibold text-gray-600 border-b-2 border-transparent hover:bg-gray-50">
             Semua (<span id="count-all">0</span>)
           </a>
           <a href="#" data-tab="live"

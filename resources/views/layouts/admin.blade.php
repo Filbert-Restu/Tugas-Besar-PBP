@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>@yield('title', 'Admin - '.config('app.name'))</title>
+    <title>@yield('title', config('app.name'))</title>
     @vite('resources/css/app.css')
 </head>
 <body class="bg-gray-100 flex">
@@ -14,9 +14,9 @@
         </div>
         <nav class="p-4 space-y-2">
             <a href="{{ route('admin.dashboard') }}" class="block px-3 py-2 hover:bg-blue-100">Dashboard</a>
-            <a href="{{ route('products.index') }}" class="block px-3 py-2 hover:bg-blue-100">Produk</a>
-            <a href="{{ route('categories.index') }}" class="block px-3 py-2 hover:bg-blue-100">Kategori</a>
-            <a href="{{ route('orders.index') }}" class="block px-3 py-2 hover:bg-blue-100">Pesanan</a>
+            <a href="{{ route('admin.products.index') }}" class="block px-3 py-2 hover:bg-blue-100">Produk</a>
+            <a href="#" class="block px-3 py-2 hover:bg-blue-100">Kategori</a>
+            <a href="{{ route('admin.orders.index') }}" class="block px-3 py-2 hover:bg-blue-100">Pesanan</a>
         </nav>
     </aside>
 

@@ -12,6 +12,10 @@ return new class extends Migration {
             $table->decimal('total', 12, 2);
             $table->string('status')->default('pending');
             $table->text('address_text')->nullable();
+            $table->string('payment_status')->default('unpaid');
+            $table->string('payment_method')->nullable();
+            // shipping status
+            $table->string('shipping_status')->default('pending');
             $table->timestamps();
         });
     }

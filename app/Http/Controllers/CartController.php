@@ -20,12 +20,20 @@ class CartController extends Controller
 
     public function add(Request $request, Product $product)
     {
-        $cart = Cart::firstOrCreate(['user_id' => Auth::id()]);
-        $item = CartItem::updateOrCreate(
-            ['cart_id' => $cart->id, 'product_id' => $product->id],
-            ['qty' => DB::raw('qty + 1')]
-        );
-        return back()->with('success', 'Produk ditambahkan ke keranjang');
+        $cart = Auth::user()->cart;
+
+        $existingItem = $cart->items()->where('product_id', $product->id)->first();
+
+        if ($existingItem) {
+            $existingItem->increment('qty');
+        } else {
+            $cart->items()->create([
+                'product_id' => $product->id,
+                'qty' => 1,
+            ]);
+        }
+
+        return back()->with('success', 'Produk berhasil ditambahkan ke keranjang!');
     }
 
     public function remove(Product $product)

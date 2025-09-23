@@ -24,7 +24,6 @@ class OrdersTableSeeder extends Seeder
                 'payment_status' => 'unpaid',
                 'payment_method' => 'transfer',
                 'shipping_status' => 'pending',
-                'tracking_number' => null,
             ]);
 
             OrderItem::create([

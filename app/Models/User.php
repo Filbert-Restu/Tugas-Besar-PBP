@@ -51,11 +51,11 @@ class User extends Authenticatable
      */
     public function cart()
     {
-        return $this->hasOne(\App\Models\Cart::class);
+        return $this->hasOne(Cart::class);
     }
 
     public function orders()
     {
-        return $this->hasMany(\App\Models\Order::class);
+        return $this->hasMany(Order::class);
     }
 }

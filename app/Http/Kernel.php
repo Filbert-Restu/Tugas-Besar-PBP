@@ -6,8 +6,9 @@ use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
 {
-    protected $routeMiddleware = [
-        // ...
-        'admin' => \App\Http\Middleware\AdminMiddleware::class,
+    protected $middlewareAliases = [
+        'auth' => \App\Http\Middleware\Authenticate::class,
+        'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+        'role' => \App\Http\Middleware\CheckRole::class,
     ];
 }

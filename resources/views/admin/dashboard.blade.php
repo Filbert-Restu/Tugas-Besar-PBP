@@ -70,7 +70,7 @@
 @section('title', 'Dashboard Admin')
 
 @section('breadcrumb')
-<a href="{{ route('admin.dashboard') }}">Dashboard</a>
+    <a href="{{ route('admin.dashboard') }}">Dashboard</a>
 @endsection
 
 @section('content')

@@ -16,9 +16,7 @@ class UsersTableSeeder extends Seeder
             [
                 'name' => 'Admin Demo',
                 'password' => Hash::make('admin123'),
-                'role' => 'admin',
-                'phone' => '081234567890',
-                'address' => 'Jl. Admin No. 1, Jakarta'
+                'role' => 'admin'
             ]
         );
 
@@ -28,9 +26,7 @@ class UsersTableSeeder extends Seeder
             [
                 'name' => 'User Demo',
                 'password' => Hash::make('user123'),
-                'role' => 'user',
-                'phone' => '089876543210',
-                'address' => 'Jl. User Raya No. 2, Bandung'
+                'role' => 'user'
             ]
         );
     }

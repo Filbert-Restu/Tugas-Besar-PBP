@@ -27,8 +27,6 @@ class ProductsTableSeeder extends Seeder
                     'price' => $p['price'],
                     'stock' => $p['stock'],
                     'category_id' => $cat->id,
-                    'description' => $p['name'].' berkualitas tinggi',
-                    'image' => $p['image'],
                     'is_active' => true,
                 ]
             );

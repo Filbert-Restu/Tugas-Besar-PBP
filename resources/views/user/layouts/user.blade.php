@@ -10,7 +10,7 @@
     <!-- Sidebar -->
     <aside class="w-64 bg-white shadow-md h-screen fixed">
         <div class="p-4 border-b">
-            <h1 class="text-xl font-bold text-blue-600">Admin Panel</h1>
+            <h1 class="text-xl font-bold text-blue-600">User Panel</h1>
         </div>
         <nav class="p-4 space-y-2">
             <a href="{{ route('admin.dashboard') }}" class="block px-3 py-2 hover:bg-blue-100">Dashboard</a>
@@ -25,7 +25,7 @@
         <!-- Navbar -->
         <header class="bg-white shadow p-4 flex justify-between items-center">
             <h2 class="text-lg font-semibold">@yield('title', 'Admin')</h2>
-            <form method="POST" action="{{ route('logout') }}">
+            <form method="POST" action="{{ route('login') }}">
                 @csrf
                 <button class="bg-red-500 text-white px-3 py-1 rounded">Logout</button>
             </form>

@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="p-6">
-    <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6">➕ Add User</h2>
+    <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6">Add User</h2>
 
     <div class="bg-white dark:bg-gray-900 shadow-md rounded-lg p-6">
         <form action="{{ route('admin.users.store') }}" method="POST">

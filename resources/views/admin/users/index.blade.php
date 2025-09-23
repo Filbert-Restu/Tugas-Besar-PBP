@@ -3,7 +3,7 @@
 @section('content')
 <div class="p-6">
     <div class="flex items-center justify-between mb-6">
-        <h2 class="text-2xl font-bold text-gray-800 dark:text-purple-950">👥 Manage Users</h2>
+        <h2 class="text-2xl font-bold text-gray-800 dark:text-purple-950">Manage Users</h2>
         <a href="{{ route('admin.users.create') }}"
            class="px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700">
            + Add User

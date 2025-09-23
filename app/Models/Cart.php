@@ -10,12 +10,12 @@ class Cart extends Model
 
     public function user()
     {
-        return $this->belongsTo(\App\Models\User::class);
+        return $this->belongsTo(User::class);
     }
 
     public function items()
     {
-        return $this->hasMany(\App\Models\CartItem::class);
+        return $this->hasMany(CartItem::class);
     }
 
 }

@@ -27,12 +27,22 @@ class ProductController extends Controller
             'price'       => 'required|numeric',
             'stock'       => 'required|integer',
             'category_id' => 'required|exists:categories,id',
+            'description' => 'nullable|string',
+            'image'       => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        Product::create($request->all());
+        $data = $request->all();
+
+        // handle upload gambar
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('products', 'public');
+        }
+
+        Product::create($data);
 
         return redirect()->route('admin.products.index')->with('success', 'Produk berhasil ditambahkan');
     }
+
 
     public function edit(Product $product)
     {
@@ -47,9 +57,18 @@ class ProductController extends Controller
             'price'       => 'required|numeric',
             'stock'       => 'required|integer',
             'category_id' => 'required|exists:categories,id',
+            'description' => 'nullable|string',
+            'image'       => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        $product->update($request->all());
+        $data = $request->all();
+
+        // handle upload gambar baru (replace gambar lama)
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('products', 'public');
+        }
+
+        $product->update($data);
 
         return redirect()->route('admin.products.index')->with('success', 'Produk berhasil diperbarui');
     }

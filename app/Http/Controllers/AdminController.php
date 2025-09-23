@@ -16,9 +16,9 @@ class AdminController extends Controller
         $totalProduk  = Product::count();
         $totalPesanan = Order::count();
         $totalUser    = User::count();
-        $orders       = Order::latest()->take(5)->get();
+        $recentOrders = Order::with(['user','items.product'])->latest()->take(7)->get();
 
-        return view('admin.dashboard', compact('totalProduk', 'totalPesanan', 'totalUser', 'orders'));
+        return view('admin.dashboard', compact('totalProduk', 'totalPesanan', 'totalUser', 'recentOrders'));
     }
 
     /**

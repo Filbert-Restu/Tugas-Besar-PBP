@@ -2,10 +2,10 @@
 
 @section('content')
 <div class="p-6">
-    <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6">✏️ Edit Produk</h2>
+    <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6">Edit Produk</h2>
 
     <div class="bg-white dark:bg-gray-900 shadow-md rounded-lg p-6">
-        <form action="{{ route('admin.products.update', $product) }}" method="POST">
+        <form action="{{ route('admin.products.update', $product) }}" method="POST" enctype="multipart/form-data">
             @csrf @method('PUT')
 
             <!-- Nama Produk -->
@@ -45,6 +45,32 @@
                        class="w-full px-3 py-2 border rounded-lg focus:ring focus:ring-blue-400 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-200" required>
                 @error('stock') <p class="text-sm text-red-600 mt-1">{{ $message }}</p> @enderror
             </div>
+
+            <!-- Gambar -->
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Gambar Produk</label>
+                @if($product->image)
+                    <img src="{{ asset('storage/'.$product->image) }}" class="w-32 h-32 object-cover mb-2 rounded-lg">
+                @endif
+                <input type="file" name="image"
+                    class="w-full px-3 py-2 border rounded-lg bg-white text-gray-800 
+                            dark:bg-gray-800 dark:text-gray-200 
+                            border-gray-300 dark:border-gray-700 
+                            focus:ring focus:ring-blue-400">
+                @error('image') <p class="text-sm text-red-600 mt-1">{{ $message }}</p> @enderror
+            </div>
+
+            <!-- Deskripsi -->
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Deskripsi</label>
+                <textarea name="description" rows="4"
+                        class="w-full px-3 py-2 border rounded-lg bg-white text-gray-800 
+                                dark:bg-gray-800 dark:text-gray-200 
+                                border-gray-300 dark:border-gray-700 
+                                focus:ring focus:ring-blue-400">{{ old('description', $product->description) }}</textarea>
+                @error('description') <p class="text-sm text-red-600 mt-1">{{ $message }}</p> @enderror
+            </div>
+
 
             <!-- Tombol -->
             <div class="flex items-center gap-3">

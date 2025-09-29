@@ -1,130 +1,142 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Tambah Produk</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-50 text-gray-900">
-  <div class="max-w-3xl mx-auto p-4 sm:p-6">
+@extends('layouts.app')
+
+@section('content')
+  <div class="max-w-4xl mx-auto">
     <!-- Header -->
-    <header class="flex items-center gap-3 mb-6">
-      <a href="{{ route('catalog') }}"
-         class="inline-flex items-center justify-center w-9 h-9 rounded-xl border border-gray-300 bg-white hover:bg-gray-100">←</a>
-      <h1 class="text-2xl sm:text-3xl font-bold tracking-tight">Tambah Produk</h1>
-    </header>
-
-    <!-- Error summary -->
-    @if ($errors->any())
-      <div class="mb-6 rounded-2xl border border-gray-300 bg-white p-4">
-        <div class="font-semibold text-gray-900">Periksa kembali isianmu:</div>
-        <ul class="mt-2 list-disc pl-6 text-sm text-red-600">
-          @foreach ($errors->all() as $err)
-            <li>{{ $err }}</li>
-          @endforeach
-        </ul>
-      </div>
-    @endif
-
-    <form action="{{ route('addproduct.store') }}" method="POST" class="space-y-5">
-      @csrf
-
-      <!-- Nama Produk -->
-      <div>
-        <label for="name" class="block text-sm font-medium text-gray-800 mb-1">
-          Nama Produk <span class="text-red-600">*</span>
-        </label>
-        <input id="name" name="name" type="text" maxlength="255" required
-               value="{{ old('name') }}"
-               placeholder="Masukkan nama produk"
-               class="w-full rounded-2xl border border-gray-300 bg-white px-4 py-3 placeholder:text-gray-400
-                      focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-gray-800" />
-        @error('name') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
-      </div>
-
-      <!-- Deskripsi -->
-      <div>
-        <label for="description" class="block text-sm font-medium text-gray-800 mb-1">
-          Deskripsi Produk <span class="text-red-600">*</span>
-        </label>
-        <textarea id="description" name="description" rows="5" required
-                  placeholder="Tuliskan detail produk, kondisi, ukuran, dll."
-                  class="w-full rounded-2xl border border-gray-300 bg-white px-4 py-3 placeholder:text-gray-400
-                         focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-gray-800">{{ old('description') }}</textarea>
-        @error('description') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
-      </div>
-
-      <!-- Kategori -->
-      <div>
-        <label for="category" class="block text-sm font-medium text-gray-800 mb-1">
-          Kategori <span class="text-red-600">*</span>
-        </label>
-        <input id="category" name="category" type="text" required
-               value="{{ old('category') }}"
-               placeholder="Contoh: Elektronik / Fashion / Furniture"
-               class="w-full rounded-2xl border border-gray-300 bg-white px-4 py-3
-                      focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-gray-800" />
-        @error('category') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
-      </div>
-
-      <!-- Harga -->
-      <div>
-        <label for="price" class="block text-sm font-medium text-gray-800 mb-1">
-          Harga <span class="text-red-600">*</span>
-        </label>
-        <div class="relative">
-          <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-gray-500">Rp</span>
-          <input id="price" name="price" type="number" min="0" step="100" required
-                 value="{{ old('price') }}"
-                 placeholder="0"
-                 class="w-full rounded-2xl border border-gray-300 bg-white pl-12 pr-4 py-3
-                        focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-gray-800" />
+    <div class="mb-6">
+      <div class="flex items-center gap-3 mb-2">
+        <a href="{{ route('products') }}" class="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-md hover:shadow-lg transition-shadow border border-gray-200">
+          <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+        </a>
+        <div>
+          <h1 class="text-3xl font-bold text-gray-800">Tambah Produk Baru</h1>
+          <p class="text-gray-500 mt-1">Lengkapi informasi produk Anda</p>
         </div>
-        @error('price') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
       </div>
+    </div>
 
-      <!-- Stok -->
+    <!-- Form -->
+    <form class="bg-white shadow-xl rounded-2xl p-8 space-y-6 border border-gray-100">
+      <!-- Image Upload Section -->
       <div>
-        <label for="stock" class="block text-sm font-medium text-gray-800 mb-1">
-          Stok <span class="text-red-600">*</span>
-        </label>
-        <input id="stock" name="stock" type="number" min="0" step="1" required
-               value="{{ old('stock', 0) }}"
-               placeholder="0"
-               class="w-full rounded-2xl border border-gray-300 bg-white px-4 py-3
-                      focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-gray-800" />
-        @error('stock') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
-      </div>
-
-      <!-- Ongkos Kirim -->
-      <div>
-        <label for="shipping_cost" class="block text-sm font-medium text-gray-800 mb-1">
-          Ongkos Kirim <span class="text-red-600">*</span>
-        </label>
-        <div class="relative">
-          <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-gray-500">Rp</span>
-          <input id="shipping_cost" name="shipping_cost" type="number" min="0" step="100" required
-                 value="{{ old('shipping_cost', 0) }}"
-                 placeholder="0"
-                 class="w-full rounded-2xl border border-gray-300 bg-white pl-12 pr-4 py-3
-                        focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-gray-800" />
+        <label class="block text-sm font-semibold text-gray-700 mb-3">Foto Produk</label>
+        <div class="relative group">
+          <div class="border-2 border-dashed border-gray-300 rounded-2xl flex flex-col items-center justify-center p-12 text-gray-500 cursor-pointer hover:border-green-500 hover:bg-green-50 transition-all bg-gradient-to-br from-gray-50 to-gray-100">
+            <div class="w-16 h-16 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+              <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+              </svg>
+            </div>
+            <p class="text-base font-semibold text-gray-700 mb-1">Upload Gambar Produk</p>
+            <p class="text-sm text-gray-500">PNG, JPG hingga 5MB</p>
+          </div>
         </div>
-        @error('shipping_cost') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
       </div>
 
-      <!-- Tombol aksi -->
-      <div class="pt-2 flex items-center gap-3">
-        <button type="submit"
-                class="inline-flex justify-center rounded-2xl bg-gray-900 px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-black focus:outline-none focus:ring-2 focus:ring-gray-800">
-          Simpan
+      <!-- Product Name -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-3">Nama Produk</label>
+        <div class="relative">
+          <input type="text" placeholder="Masukkan nama produk" class="w-full border-2 border-gray-200 rounded-xl p-4 focus:border-green-500 focus:ring-4 focus:ring-green-100 outline-none transition-all text-gray-800 placeholder-gray-400">
+          <div class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product Description -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-3">Deskripsi Produk</label>
+        <textarea placeholder="Ceritakan detail produk Anda..." rows="5" class="w-full border-2 border-gray-200 rounded-xl p-4 focus:border-green-500 focus:ring-4 focus:ring-green-100 outline-none transition-all text-gray-800 placeholder-gray-400 resize-none"></textarea>
+        <p class="text-xs text-gray-500 mt-2 flex items-center gap-1">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          Jelaskan fitur dan keunggulan produk Anda
+        </p>
+      </div>
+
+      <!-- Product Details Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Category -->
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-3">Kategori Produk</label>
+          <div class="relative">
+            <input type="text" placeholder="Contoh: Kosmetik, Fashion" class="w-full border-2 border-gray-200 rounded-xl p-4 focus:border-green-500 focus:ring-4 focus:ring-green-100 outline-none transition-all text-gray-800 placeholder-gray-400">
+            <div class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Weight -->
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-3">Berat Produk</label>
+          <div class="relative">
+            <input type="text" placeholder="Contoh: 100" class="w-full border-2 border-gray-200 rounded-xl p-4 pr-16 focus:border-green-500 focus:ring-4 focus:ring-green-100 outline-none transition-all text-gray-800 placeholder-gray-400">
+            <div class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 font-medium text-sm">
+              gram
+            </div>
+          </div>
+        </div>
+
+        <!-- Price -->
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-3">Harga Produk</label>
+          <div class="relative">
+            <div class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-semibold">
+              Rp
+            </div>
+            <input type="text" placeholder="0" class="w-full border-2 border-gray-200 rounded-xl p-4 pl-12 focus:border-green-500 focus:ring-4 focus:ring-green-100 outline-none transition-all text-gray-800 placeholder-gray-400">
+          </div>
+        </div>
+
+        <!-- Stock -->
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-3">Stok Produk</label>
+          <div class="relative">
+            <input type="text" placeholder="Contoh: 100" class="w-full border-2 border-gray-200 rounded-xl p-4 pr-16 focus:border-green-500 focus:ring-4 focus:ring-green-100 outline-none transition-all text-gray-800 placeholder-gray-400">
+            <div class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 font-medium text-sm">
+              unit
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Info Box -->
+      <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4 flex gap-3">
+        <div class="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center flex-shrink-0">
+          <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+        </div>
+        <div class="flex-1">
+          <p class="text-sm font-semibold text-blue-800 mb-1">Tips Produk Berkualitas</p>
+          <p class="text-xs text-blue-700">Gunakan foto yang jelas, deskripsi detail, dan harga yang kompetitif untuk menarik lebih banyak pembeli.</p>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-col sm:flex-row gap-3 pt-4">
+        <button type="submit" class="flex-1 sm:flex-none px-8 py-4 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-xl shadow-lg hover:shadow-xl hover:from-green-700 hover:to-emerald-700 transition-all font-semibold flex items-center justify-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+          </svg>
+          Simpan Produk
         </button>
-        <a href="{{ route('catalog') }}"
-           class="inline-flex justify-center rounded-2xl border border-gray-300 bg-white px-5 py-3 text-sm font-semibold text-gray-900 hover:bg-gray-100">
+        <a href="{{ route('products') }}" class="flex-1 sm:flex-none px-8 py-4 bg-gradient-to-r from-gray-700 to-gray-800 text-white rounded-xl shadow-lg hover:shadow-xl hover:from-gray-800 hover:to-gray-900 transition-all font-semibold flex items-center justify-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
           Batal
         </a>
       </div>
     </form>
   </div>
-</body>
-</html>
+@endsection

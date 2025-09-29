@@ -107,27 +107,7 @@ Route::get("/catalog", function() {
     return view("catalog", compact('products'));
 })->name('catalog');
 
-// Add produk
-Route::get('/addproduct', function () {
-    return view('addproduct');
-})->name('addproduct');
-
-/**
- * Handle submit form tambah produk (validasi saja + redirect)
- * Catatan: karena DUMMY_PRODUCTS itu constant, kita tidak “menyimpan”
- * data baru di sini. Nanti kalau sudah DB, ganti dengan Product::create($data).
- */
-Route::post('/addproduct', function (Request $request) {
-    $data = $request->validate([
-        'name'          => ['required','string','max:255'],
-        'description'   => ['required','string','max:3000'],
-        'category'      => ['required','string','max:255'],
-        'price'         => ['required','integer','min:0'],
-        'stock'         => ['required','integer','min:0'],
-        'shipping_cost' => ['required','integer','min:0'],
-    ]);
-
-    // TODO (pakai DB nanti): Product::create($data);
-
-    return redirect()->route('catalog')->with('ok', 'Produk baru berhasil ditambahkan!');
-})->name('addproduct.store');
+Route::get('/dashboard', fn() => view('dashboard'))->name('dashboard');
+Route::get('/products', fn() => view('products'))->name('products');
+Route::get('/orders', fn() => view('orders'))->name('orders');
+Route::get('/products/add', fn() => view('addproduct'))->name('products.add');

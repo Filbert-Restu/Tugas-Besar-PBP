@@ -1,16 +1,22 @@
 <?php
 
+// Main Controller
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
-use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\UserController;
+
+// Admin Controller
+use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\AdminProductController;
+use App\Http\Controllers\AdminOrderController;
+
 
 // Landing Page
 Route::get('/', [MainController::class, 'index'])->name('main');
@@ -35,15 +41,37 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:admin')->prefix('admin')->name('admin.')->group(function () {
             // // Dashboard untuk admin
 
-            // Route::controller(AdminController::class)->group(function () {
-            //     Route::get('/dashboard', 'dashboard')->name('dashboard');
-            //     // Route::get('/users', 'users')->name('users.index');
-            //     // Route::delete('/users/{user}', 'destroyUser')->name('users.destroy');
-            // });
+            Route::controller(AdminDashboardController::class)->group(function () {
+                Route::get('/dashboard', 'dashboard')->name('dashboard');
+                // Route::get('/users', 'users')->name('users.index');
+                // Route::delete('/users/{user}', 'destroyUser')->name('users.destroy');
+            });
 
-            // Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-            // Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+            Route::get('/products', [AdminProductController::class, 'index'])->name('products.index');
+            // Route::get('/products/{product}', [AdminProductController::class, 'show'])->name('products.show');
 
+            // order admin
+            Route::controller(AdminOrderController::class)->group(function () {
+                Route::get('/orders', 'index')->name('orders.index');
+                // Route::get('/orders/{order}', 'show')->name('orders.show');
+                Route::patch('/orders/{order}/status', 'updateStatus')->name('orders.updateStatus');
+            });
+
+            // admin categories
+            Route::controller(AdminCategoryController::class)->group(function () {
+                Route::get('/categories', 'index')->name('categories.index');
+                // Route::get('/categories/create', 'create')->name('categories.create');
+                // Route::post('/categories', 'store')->name('categories.store');
+                // Route::get('/categories/{category}/edit', 'edit')->name('categories.edit');
+                // Route::put('/categories/{category}', 'update')->name('categories.update');
+                // Route::delete('/categories/{category}', 'destroy')->name('categories.destroy');
+            });
+
+            // user admin
+            Route::controller(UserController::class)->group(function () {
+                Route::get('/users', 'index')->name('users.index');
+                // Route::delete('/users/{user}', 'destroy')->name('users.destroy');
+            });
             // // // Cart
             // Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
             // // Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
@@ -71,8 +99,14 @@ Route::middleware('auth')->group(function () {
         Route::controller(CartController::class)->group(function () {
             Route::get('/cart', 'index')->name('cart.index');
             Route::post('/cart/add/{product}', 'add')->name('cart.add');
+            Route::post('/cart/reduce/{product}', 'reduce')->name('cart.reduce');
             Route::delete('/cart/remove/{product}', 'remove')->name('cart.remove');
+            Route::get('/cart/checkout', 'checkout')->name('cart.checkout');
+            Route::post('/cart/checkout', 'checkout')->name('cart.checkout.single');
+            Route::post('/checkout', 'doCheckout')->name('cart.doCheckout');
+
         });
+
         // hapus data keranjang
         // buat pesanan
         // Route::get('/', [DashboardController::class, 'index'])->name('user.dashboard');

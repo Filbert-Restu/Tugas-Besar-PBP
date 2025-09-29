@@ -10,6 +10,6 @@ class SearchController extends Controller
     public function index(Request $request) {
         $query = $request->input('q');
         $products = Product::where('name', 'LIKE', "%{$query}%")->get();
-        return view('search.index');
+        return view('search.index', compact('products', 'query'));
     }
 }

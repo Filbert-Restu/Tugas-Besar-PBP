@@ -1,11 +1,11 @@
-@extends('admin.layouts.admin')
+@extends('layouts.admin')
 
 @section('content')
 <div class="p-6">
     <!-- Header -->
     <div class="flex items-center justify-between mb-6">
         <h2 class="text-2xl font-bold text-gray-800 dark:text-purple-900">📦 Daftar Produk</h2>
-        <a href="{{ route('admin.products.create') }}" 
+        <a href="#"
            class="px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700">
            + Tambah Produk
         </a>
@@ -46,13 +46,13 @@
                     </td>
                     <td class="px-4 py-3 text-sm text-gray-700 dark:text-gray-200">{{ $product->stock }}</td>
                     <td class="px-4 py-3 text-center flex gap-2 justify-center">
-                        <a href="{{ route('admin.products.edit', $product) }}" 
+                        <a href="#"
                            class="px-3 py-1 text-xs font-semibold text-white bg-yellow-500 rounded hover:bg-yellow-600">
                            Edit
                         </a>
-                        <form action="{{ route('admin.products.destroy', $product) }}" method="POST" onsubmit="return confirm('Yakin hapus produk ini?')">
+                        <form action="#" method="POST" onsubmit="return confirm('Yakin hapus produk ini?')">
                             @csrf @method('DELETE')
-                            <button type="submit" 
+                            <button type="submit"
                                     class="px-3 py-1 text-xs font-semibold text-white bg-red-600 rounded hover:bg-red-700">
                                 Hapus
                             </button>

@@ -9,10 +9,10 @@
 <body class="bg-gray-100">
 
   <!-- Navbar -->
-  @include('layouts.navbar')
+  @include('partials.admin.navbar')
 
   <!-- Sidebar -->
-  @include('layouts.sidebar')
+  @include('partials.admin.sidebar')
 
   <!-- Main Content -->
   <div class="pt-16 sm:ml-64">

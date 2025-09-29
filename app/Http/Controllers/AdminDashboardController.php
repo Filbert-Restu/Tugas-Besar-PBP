@@ -6,7 +6,7 @@ use App\Models\User;
 use App\Models\Product;
 use App\Models\Order;
 
-class AdminController extends Controller
+class AdminDashboardController extends Controller
 {
     /**
      * Dashboard Admin

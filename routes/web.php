@@ -47,8 +47,15 @@ Route::middleware('auth')->group(function () {
                 // Route::delete('/users/{user}', 'destroyUser')->name('users.destroy');
             });
 
-            Route::get('/products', [AdminProductController::class, 'index'])->name('products.index');
-            // Route::get('/products/{product}', [AdminProductController::class, 'show'])->name('products.show');
+            Route::controller(AdminProductController::class)->group(function () {
+                Route::get('/products', 'index')->name('products.index');
+                Route::get('/products/add', 'create')->name('products.add');
+                // Route::post('/products', 'store')->name('products.store');
+                // Route::get('/products/{product}/edit', 'edit')->name('products.edit');
+                // Route::put('/products/{product}', 'update')->name('products.update');
+                // Route::delete('/products/{product}', 'destroy')->name('products.destroy');
+            });
+
 
             // order admin
             Route::controller(AdminOrderController::class)->group(function () {

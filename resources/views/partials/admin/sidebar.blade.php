@@ -1,37 +1,37 @@
-<aside id="logo-sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen pt-20
-    transition-transform -translate-x-full bg-white border-r border-gray-200
-    sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700" aria-label="Sidebar">
+    <!-- Sidebar -->
+    <aside class="w-64 min-h-screen bg-white shadow-xl">
+      <div class="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 py-6">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
+            <span class="text-green-600 font-bold text-xl">K</span>
+          </div>
+          <div>
+            <h1 class="font-bold text-lg">KlikMart</h1>
+            <p class="text-xs text-green-100">Admin Centre</p>
+          </div>
+        </div>
+      </div>
 
-  <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
-    <ul class="space-y-2 font-medium">
-      <li>
-        <a href="{{ route('admin.dashboard') }}"
-           class="flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700
-                  {{ request()->routeIs('admin.dashboard') ? 'bg-blue-500 text-white' : 'text-gray-700 dark:text-white' }}">
-          📊 <span class="ml-2">Dashboard</span>
+      <nav class="flex flex-col gap-2 mt-8 px-4">
+        <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-green-50 hover:text-green-600 transition-all group">
+          <svg class="w-5 h-5 text-gray-400 group-hover:text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+          </svg>
+          <span class="font-medium">Dashboard</span>
         </a>
-      </li>
-      <li>
-        <a href="{{ route('admin.products.index') }}"
-           class="flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700
-                  {{ request()->is('admin/products*') ? 'bg-blue-500 text-white' : 'text-gray-700 dark:text-white' }}">
-          🛒 <span class="ml-2">Produk</span>
+
+        <a href="{{ route('admin.products.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-green-50 hover:text-green-600 transition-all group">
+          <svg class="w-5 h-5 text-gray-400 group-hover:text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+          </svg>
+          <span class="font-medium">Produk Saya</span>
         </a>
-      </li>
-      <li>
-        <a href="{{ route('admin.orders.index') }}"
-           class="flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700
-                  {{ request()->is('admin/orders*') ? 'bg-blue-500 text-white' : 'text-gray-700 dark:text-white' }}">
-          📦 <span class="ml-2">Pesanan</span>
+
+        <a href="{{ route('admin.orders.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-green-50 hover:text-green-600 transition-all group">
+          <svg class="w-5 h-5 text-gray-400 group-hover:text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+          </svg>
+          <span class="font-medium">Pesanan Saya</span>
         </a>
-      </li>
-      <li>
-        <a href="{{ route('admin.users.index') }}"
-           class="flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700
-                  {{ request()->is('admin/users*') ? 'bg-blue-500 text-white' : 'text-gray-700 dark:text-white' }}">
-          👥 <span class="ml-2">Users</span>
-        </a>
-      </li>
-    </ul>
-  </div>
-</aside>
+      </nav>
+    </aside>

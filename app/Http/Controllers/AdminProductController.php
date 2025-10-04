@@ -13,4 +13,10 @@ class AdminProductController extends Controller
         $products = Product::with('category')->paginate(10);
         return view('admin.products.index', compact('products'));
     }
+
+    public function create()
+    {
+        $categories = Category::all();
+        return view('admin.products.addproduct', compact('categories'));
+    }
 }

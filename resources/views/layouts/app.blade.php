@@ -16,8 +16,18 @@
         @yield('content')
     </main>
 
+    {{-- logout button --}}
+    <a href="{{ route('logout') }}"
+        onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+        class="fixed bottom-4 right-4 bg-red-600 text-white px-4 py-2 rounded-full shadow-lg hover:bg-red-700 transition duration-300">
+        Logout
+    </a>
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
+        @csrf
+    </form>
     <!-- Footer -->
     @include('partials.footer')
+    {{-- AlpineJS --}}
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
 </body>

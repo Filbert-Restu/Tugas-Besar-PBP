@@ -110,8 +110,10 @@ Route::middleware('auth')->group(function () {
             Route::delete('/cart/remove/{product}', 'remove')->name('cart.remove');
             Route::get('/cart/checkout', 'checkout')->name('cart.checkout');
             Route::post('/cart/checkout', 'checkout')->name('cart.checkout.single');
-            Route::post('/checkout', 'doCheckout')->name('cart.doCheckout');
+            // Route::post('/checkout', 'doCheckout')->name('cart.doCheckout');
 
+            Route::get('cart/checkout/shipping', [OrderController::class, 'shipping'])->name('cart.checkout.shipping');
+            Route::post('/checkout/process', [OrderController::class, 'processCheckout'])->name('cart.checkout.process');
         });
 
         // hapus data keranjang

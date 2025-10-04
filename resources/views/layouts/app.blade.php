@@ -7,26 +7,17 @@
     {{-- Favicon --}}
     <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
 </head>
-<body class="bg-gray-100 flex">
+<body class="bg-gray-100">
+    <!-- Navigation -->
+    @include('partials.navbar')
 
     <!-- Main Content -->
-    <div class="flex-1 flex flex-col">
-        <!-- Navbar -->
-        <header>
-            @include('partials.navbar')
-        </header>
+    <main>
+        @yield('content')
+    </main>
 
-        <!-- main -->
-        <main>
-            @yield('content')
-        </main>
-
-
-        <!-- Footer -->
-        <footer>
-            @include('partials.footer')
-        </footer>
-    </div>
+    <!-- Footer -->
+    @include('partials.footer')
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
 </body>

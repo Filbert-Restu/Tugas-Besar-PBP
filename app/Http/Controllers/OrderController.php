@@ -19,7 +19,7 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $cart = Auth::user()->cart;   // pakai relasi hasOne
-        
+
         if (!$cart) {
             return back()->with('error', 'Keranjang kosong');
         }
@@ -74,5 +74,10 @@ class OrderController extends Controller
         $orders = Order::latest()->take(5)->get();
 
         return view('admin.dashboard', compact('totalProduk', 'totalPesanan', 'totalUser', 'orders'));
+    }
+
+    public function shipping()
+    {
+        return view('cart.shipping');
     }
 }

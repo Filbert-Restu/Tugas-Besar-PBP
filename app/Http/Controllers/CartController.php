@@ -67,7 +67,7 @@ class CartController extends Controller
             ->whereIn('id', $request->input('items', []))
             ->get(['id', 'name', 'product_id', 'qty']);
 
-        return view('cart.checkout', compact('CheckoutItems'));
+        return view('checkout', compact('CheckoutItems'));
     }
 
 

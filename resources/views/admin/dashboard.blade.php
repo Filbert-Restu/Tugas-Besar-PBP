@@ -64,5 +64,13 @@
       </div>
       </div>
     </div>
+    {{-- logout --}}
+    <div class="text-center">
+      <form method="POST" action="{{ route('logout') }}">
+        @csrf
+        <button type="submit" class="mt-4 bg-red-500 hover:bg-red-600 text-white font-semibold px-6 py-2 rounded-lg transition">
+          Logout
+        </button>
+      </form>
   </div>
 @endsection

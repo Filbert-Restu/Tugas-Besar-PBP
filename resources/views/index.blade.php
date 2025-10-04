@@ -1,63 +1,124 @@
 @extends('layouts.app')
 
-@section('title', 'Landing Page')
+@section('title', 'KlikMart - Belanja Klik, Semua Asik')
 
 @section('content')
-<div class="container mx-auto px-4 py-8">
-    <div class="bg-purple-600 rounded-2xl p-8 md:p-12 text-white overflow-hidden">
-        <div class="flex flex-col md:flex-row items-center justify-between">
-
-            <div class="md:w-1/2 text-center md:text-left mb-8 md:mb-0">
-                <h1 class="text-4xl lg:text-5xl font-bold mb-2">
-                    Ingin mendukung UMKM?
-                </h1>
-                <p class="text-lg lg:text-xl mb-6 opacity-90">
-                    Coba Shoped aja!
-                </p>
-
-                <a href="#" class="inline-block border-2 border-white px-8 py-3 rounded-lg font-bold hover:bg-white hover:text-purple-600 transition-colors duration-300">
-                    Cek Sekarang
+<!-- Hero Section -->
+<div class="bg-gradient-to-r from-sky-300 via-cyan-300 to-blue-300 py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center">
+            <div class="bg-white rounded-2xl shadow-xl p-10 max-w-xl mx-auto">
+                <div class="text-5xl mb-5">🛒</div>
+                <h1 class="text-3xl font-bold text-gray-800 mb-5">Belanja Klik, Semua Asik</h1>
+                <a href="#products" class="inline-block bg-teal-500 hover:bg-teal-600 text-white font-semibold px-7 py-3 rounded-lg transition">
+                    Temukan Produk Kami
                 </a>
             </div>
 
-            <div class="relative md:w-1/2 flex justify-center md:justify-end">
-
-                <img src="#" alt="Ilustrasi Promo Official Store" class="max-w-xs md:max-w-sm lg:max-w-md">
-
+            <!-- Shopping Bags Decoration -->
+            <div class="mt-10 flex justify-center items-end space-x-3">
+                <div class="w-16 h-20 bg-orange-400 rounded-t-xl"></div>
+                <div class="w-14 h-16 bg-blue-300 rounded-t-xl"></div>
+                <div class="w-20 h-24 bg-orange-500 rounded-t-xl"></div>
+                <div class="w-16 h-28 bg-blue-500 rounded-t-xl"></div>
+                <div class="w-14 h-20 bg-red-400 rounded-t-xl"></div>
+                <div class="w-16 h-16 bg-yellow-400 rounded-t-xl"></div>
+                <div class="w-20 h-24 bg-blue-400 rounded-t-xl"></div>
+                <div class="w-14 h-20 bg-red-500 rounded-t-xl"></div>
+                <div class="w-16 h-24 bg-blue-200 rounded-t-xl"></div>
             </div>
-
         </div>
     </div>
-    <h1 class="text-3xl font-bold mb-6 text-center">Produk Terbaru</h1>
+</div>
 
-    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-        @foreach($products as $product)
-        <div class="bg-white rounded-lg p-4 shadow-lg transition duration-300 ease-in-out hover:shadow-xl flex flex-col justify-between">
-            <a href="{{ route('main.show', $product->id) }}">
-                <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-full h-40 object-cover rounded-md mb-3">
-                <h2 class="text-lg font-semibold mb-1 truncate">{{ $product->name }}</h2>
-            </a>
-            <div class="mt-auto">
-                <div class="flex flex-row gap-2">
-                    {{-- Tombol masukan ke keranjang --}}
-                    <form action="{{ route('cart.add', $product->id) }}" method="POST" class="flex-1">
-                        @csrf
-                        <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition">Keranjang</button>
-                    </form>
-                    {{-- Tombol beli sekarang (contoh route 'order.now') --}}
-                    <a href="#" class="flex-1 bg-green-500 text-white py-2 rounded hover:bg-green-600 transition text-center">Beli</a>
+<!-- Main Content -->
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="flex flex-col lg:flex-row gap-6">
+        <!-- Sidebar Categories -->
+        <aside class="lg:w-56 flex-shrink-0">
+            <div class="bg-teal-50 rounded-xl p-5 sticky top-20">
+                <h2 class="text-lg font-bold text-gray-800 mb-4">Kategori</h2>
+                <ul class="space-y-2">
+                    {{-- semua kategori --}}
+                    <li>
+                        <a href="{{ route('main', ['category' => null]) }}"
+                           class="block text-gray-700 hover:text-teal-600 hover:bg-teal-100 px-3 py-2 rounded-lg transition text-sm {{ $currentCategory === null ? 'bg-teal-100 text-teal-600 font-semibold' : '' }}">
+                            Semua
+                        </a>
+                    @foreach($categories as $category)
+                    <li>
+                        <a href="{{ route('main', ['category' => $category->id]) }}"
+                           class="block text-gray-700 hover:text-teal-600 hover:bg-teal-100 px-3 py-2 rounded-lg transition text-sm {{ $currentCategory === $category ? 'bg-teal-100 text-teal-600 font-semibold' : '' }}">
+                            {{ $category->name }}
+                        </a>
+                    </li>
+                    @endforeach
+                </ul>
+            </div>
+        </aside>
+
+        <!-- Products Section -->
+        <div class="flex-1" id="products">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Produk</h2>
+                <div class="relative">
+                    <input type="text" id="searchInput" value="#" placeholder="Cari" class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent w-64">
+                    <i class="fas fa-search absolute left-3 top-3 text-gray-400 text-sm"></i>
                 </div>
             </div>
+
+            <!-- Products Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5" id="productsGrid">
+                @forelse($products as $product)
+                <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition overflow-hidden">
+                    <a href="{{ route('main.show', $product->id) }}" class="block h-40 bg-gradient-to-br {{ $product['gradient'] }} flex items-center justify-center">
+                        <i class="fas {{ $product['icon'] }} text-5xl {{ $product['icon_color'] }}"></i>
+                    </a>
+                    <div class="p-4">
+                        <a href="{{ route('main.show', $product->id) }}" class="block">
+                            <h3 class="font-semibold text-gray-800 mb-2 hover:text-teal-600 transition text-sm">{{ $product['name'] }}</h3>
+                        </a>
+                        <div class="flex items-center justify-between">
+                            <span class="text-teal-600 font-bold">Rp{{ number_format($product['price'], 0, ',', '.') }}</span>
+                            <form action="#" method="POST" class="inline">
+                                @csrf
+                                <input type="hidden" name="product_id" value="{{ $product['id'] }}">
+                                <button type="submit" class="bg-teal-500 text-white px-3 py-1.5 rounded-lg text-xs hover:bg-teal-600 transition">
+                                    Beli
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                @empty
+                <div class="col-span-full text-center py-12">
+                    <i class="fas fa-search text-6xl text-gray-300 mb-4"></i>
+                    <p class="text-gray-600 text-lg">Produk tidak ditemukan</p>
+                    <a href="#" class="inline-block mt-4 text-teal-600 hover:text-teal-700 font-semibold">
+                        Lihat Semua Produk
+                    </a>
+                </div>
+                @endforelse
+            </div>
         </div>
-        @endforeach
     </div>
-    {{-- Button logout --}}
-    @auth
-        <p>Anda login sebagai: <strong>{{ auth()->user()->role }}</strong></p>
-        <form action="{{ route('logout') }}" method="POST" class="inline">
-            @csrf
-            <button class="hover:text-red-500">Logout</button>
-        </form>
-    @endauth
 </div>
+
+<script>
+// Real-time search
+    let searchTimeout;
+    const searchInput = document.getElementById('searchInput');
+
+    searchInput.addEventListener('input', function() {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+            const search = this.value;
+            const category = '{{ $currentCategory }}';
+            const url = new URL(window.location.href);
+            url.searchParams.set('search', search);
+            url.searchParams.set('category', category);
+            window.location.href = url.toString();
+        }, 500);
+    });
+</script>
 @endsection

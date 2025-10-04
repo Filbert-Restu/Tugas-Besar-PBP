@@ -111,3 +111,4 @@ Route::get('/dashboard', fn() => view('dashboard'))->name('dashboard');
 Route::get('/products', fn() => view('products'))->name('products');
 Route::get('/orders', fn() => view('orders'))->name('orders');
 Route::get('/products/add', fn() => view('addproduct'))->name('products.add');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

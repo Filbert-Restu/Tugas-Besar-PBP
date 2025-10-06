@@ -61,32 +61,28 @@
         <div class="flex-1" id="products">
             <div class="flex items-center justify-between mb-6">
                 <h2 class="text-2xl font-bold text-gray-800">Produk</h2>
-                <div class="relative">
-                    <input type="text" id="searchInput" value="#" placeholder="Cari" class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent w-64">
-                    <i class="fas fa-search absolute left-3 top-3 text-gray-400 text-sm"></i>
-                </div>
             </div>
 
             <!-- Products Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5" id="productsGrid">
+            <div class="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-3" id="productsGrid">
                 @forelse($products as $product)
                 <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition overflow-hidden">
-                    <a href="{{ route('main.show', $product->id) }}" class="block h-40 bg-gradient-to-br {{ $product['gradient'] }} flex items-center justify-center">
-                        <i class="fas {{ $product['icon'] }} text-5xl {{ $product['icon_color'] }}"></i>
+                    <a href="{{ route('main.show', $product->id) }}" class="block h-32 bg-gradient-to-br {{ $product->gradient }} flex items-center justify-center">
+                        <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="object-cover h-full w-full">
                     </a>
                     <div class="p-4">
                         <a href="{{ route('main.show', $product->id) }}" class="block">
-                            <h3 class="font-semibold text-gray-800 mb-2 hover:text-teal-600 transition text-sm">{{ $product['name'] }}</h3>
+                            <h3 class="font-semibold text-gray-800 mb-2 hover:text-teal-600 transition text-sm">{{ $product->name }}</h3>
                         </a>
                         <div class="flex items-center justify-between">
-                            <span class="text-teal-600 font-bold">Rp{{ number_format($product['price'], 0, ',', '.') }}</span>
                             <form action="#" method="POST" class="inline">
                                 @csrf
-                                <input type="hidden" name="product_id" value="{{ $product['id'] }}">
+                                <input type="hidden" name="product_id" value="{{ $product->id }}">
                                 <button type="submit" class="bg-teal-500 text-white px-3 py-1.5 rounded-lg text-xs hover:bg-teal-600 transition">
                                     Beli
                                 </button>
                             </form>
+                            <span class="text-teal-600 font-bold">Rp{{ number_format($product->price, 0, ',', '.') }}</span>
                         </div>
                     </div>
                 </div>
@@ -103,22 +99,4 @@
         </div>
     </div>
 </div>
-
-<script>
-// Real-time search
-    let searchTimeout;
-    const searchInput = document.getElementById('searchInput');
-
-    searchInput.addEventListener('input', function() {
-        clearTimeout(searchTimeout);
-        searchTimeout = setTimeout(() => {
-            const search = this.value;
-            const category = '{{ $currentCategory }}';
-            const url = new URL(window.location.href);
-            url.searchParams.set('search', search);
-            url.searchParams.set('category', category);
-            window.location.href = url.toString();
-        }, 500);
-    });
-</script>
 @endsection

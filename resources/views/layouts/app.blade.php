@@ -6,6 +6,8 @@
     @vite('resources/css/app.css')
     {{-- Favicon --}}
     <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+
 </head>
 <body class="bg-gray-100">
     <!-- Navigation -->

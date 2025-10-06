@@ -20,9 +20,12 @@ use App\Http\Controllers\AdminOrderController;
 
 
 // Landing Page
-Route::get('/', [MainController::class, 'index'])->name('main');
-Route::get('/products/{id}', [MainController::class, 'show'])->name('main.show');
-Route::get('/search', [SearchController::class, 'index'])->name('search');
+Route::middleware('main')->group(function () {
+    Route::get('/', [MainController::class, 'index'])->name('main');
+    Route::get('/products/{id}', [MainController::class, 'show'])->name('main.show');
+    Route::get('/search', [SearchController::class, 'index'])->name('search');
+});
+
 // Auth
 
 
@@ -44,35 +47,25 @@ Route::middleware('auth')->group(function () {
 
             Route::controller(AdminDashboardController::class)->group(function () {
                 Route::get('/dashboard', 'dashboard')->name('dashboard');
-                // Route::get('/users', 'users')->name('users.index');
-                // Route::delete('/users/{user}', 'destroyUser')->name('users.destroy');
             });
 
             Route::controller(AdminProductController::class)->group(function () {
                 Route::get('/products', 'index')->name('products.index');
                 Route::get('/products/add', 'create')->name('products.add');
-                // Route::post('/products', 'store')->name('products.store');
-                // Route::get('/products/{product}/edit', 'edit')->name('products.edit');
-                // Route::put('/products/{product}', 'update')->name('products.update');
-                // Route::delete('/products/{product}', 'destroy')->name('products.destroy');
             });
 
 
             // order admin
             Route::controller(AdminOrderController::class)->group(function () {
                 Route::get('/orders', 'index')->name('orders.index');
-                // Route::get('/orders/{order}', 'show')->name('orders.show');
+
                 Route::patch('/orders/{order}/status', 'updateStatus')->name('orders.updateStatus');
             });
 
             // admin categories
             Route::controller(AdminCategoryController::class)->group(function () {
                 Route::get('/categories', 'index')->name('categories.index');
-                // Route::get('/categories/create', 'create')->name('categories.create');
-                // Route::post('/categories', 'store')->name('categories.store');
-                // Route::get('/categories/{category}/edit', 'edit')->name('categories.edit');
-                // Route::put('/categories/{category}', 'update')->name('categories.update');
-                // Route::delete('/categories/{category}', 'destroy')->name('categories.destroy');
+
             });
 
             // user admin
@@ -80,19 +73,6 @@ Route::middleware('auth')->group(function () {
                 Route::get('/users', 'index')->name('users.index');
                 // Route::delete('/users/{user}', 'destroy')->name('users.destroy');
             });
-            // // // Cart
-            // Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-            // // Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
-            // // Route::delete('/cart/remove/{product}', [CartController::class, 'remove'])->name('cart.remove');
-
-            // // // Orders
-            // // Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
-            // // Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
-
-            // // Route::resource('products', ProductController::class)->except(['show']);
-            // // Route::resource('categories', CategoryController::class);
-            // Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
-            // // Route::patch('/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
     });
 
     // role user
@@ -116,9 +96,5 @@ Route::middleware('auth')->group(function () {
             Route::get('cart/checkout/shipping', [OrderController::class, 'shipping'])->name('cart.checkout.shipping');
             Route::post('/checkout/process', [OrderController::class, 'processCheckout'])->name('cart.checkout.process');
         });
-
-        // hapus data keranjang
-        // buat pesanan
-        // Route::get('/', [DashboardController::class, 'index'])->name('user.dashboard');
     });
 });

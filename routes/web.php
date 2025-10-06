@@ -20,14 +20,14 @@ use App\Http\Controllers\AdminCategoryController;
 use App\Http\Controllers\AdminUserController;
 
 
+// Landing Page & Search
+Route::middleware('main')->group(function () {
+    Route::get('/', [MainController::class, 'index'])->name('main');
+    Route::get('/products/{id}', [MainController::class, 'show'])->name('main.show');
+    Route::get('/search', [SearchController::class, 'index'])->name('search');
+});
 
-// Landing Page
-Route::get('/', [MainController::class, 'index'])->name('main');
-Route::get('/products/{id}', [MainController::class, 'show'])->name('main.show');
-Route::get('/search', [SearchController::class, 'index'])->name('search');
-// Auth
-
-
+// Jika guest (belum login)
 Route::middleware('guest')->group(function () {
     Route::controller(AuthController::class)->group(function () {
         Route::get('/login', 'viewLogin')->name('login');
@@ -37,6 +37,7 @@ Route::middleware('guest')->group(function () {
     });
 });
 
+// Jika sudah login
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 

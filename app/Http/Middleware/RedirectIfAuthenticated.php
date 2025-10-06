@@ -31,8 +31,7 @@ class RedirectIfAuthenticated
                     // Jika bukan admin (dianggap user biasa), alihkan ke dashboard user
                     return redirect('/');
                 }
-                return message('Role tidak dikenali.');
-        }
+            }
         }
 
         return $next($request);

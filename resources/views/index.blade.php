@@ -76,7 +76,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 @forelse ($products as $product)
                     <div class="bg-white rounded-xl shadow hover:shadow-md transition overflow-hidden border border-gray-100">
-                        <a href="{{ route('main.show', $product->id) }}" class="block h-48 bg-gray-50 flex items-center justify-center">
+                        <a href="{{ route('main.show', $product->id) }}" class="h-48 bg-gray-50 flex items-center justify-center">
                             @if ($product->image)
                                 <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="object-cover h-full w-full">
                             @else

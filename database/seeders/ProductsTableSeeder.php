@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\Product;
 use App\Models\Category;
+use Illuminate\Support\Str;
 
 class ProductsTableSeeder extends Seeder
 {
@@ -20,7 +21,13 @@ class ProductsTableSeeder extends Seeder
         ];
 
         foreach ($products as $p) {
-            $cat = Category::firstOrCreate(['name' => $p['category']]);
+            // Buat kategori kalau belum ada
+            $cat = Category::firstOrCreate(
+                ['name' => $p['category']],
+                ['slug' => Str::slug($p['category'])]
+            );
+
+            // Buat atau update produk
             Product::updateOrCreate(
                 ['name' => $p['name']],
                 [
@@ -28,6 +35,8 @@ class ProductsTableSeeder extends Seeder
                     'stock' => $p['stock'],
                     'category_id' => $cat->id,
                     'is_active' => true,
+                    'image' => $p['image'],
+                    'description' => "Produk {$p['name']} berkualitas tinggi dari kategori {$p['category']}.",
                 ]
             );
         }

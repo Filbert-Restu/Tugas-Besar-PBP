@@ -5,55 +5,76 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Str;
 
 class MainController extends Controller
 {
-    //
     public function index(Request $request)
     {
-        // Ambil input dari request dengan nilai default
+        // Ambil input dari request
         $search = $request->input('search', '');
-        $categoryFilter = $request->input('category', ''); // Sebaiknya gunakan slug atau ID kategori
+        $categoryFilter = $request->input('category', '');
 
-        // Mulai query builder Eloquent, jangan ambil datanya dulu
-        $query = Product::query();
+        // Mulai query produk
+        $query = Product::with('category')->where('is_active', true);
 
-        // Terapkan filter pencarian jika ada isinya
-        // Method `when` sangat efektif untuk query kondisional
-        $query->when($search, function ($q, $search) {
-            // Mencari di kolom 'name' (case-insensitive dengan ILIKE untuk PostgreSQL, atau sesuaikan)
-            return $q->where('name', 'like', '%' . $search . '%');
-        });
+        // Jika ada pencarian
+        if (!empty($search)) {
+            $query->where('name', 'like', "%{$search}%");
+        }
 
-        // Terapkan filter kategori jika ada isinya dan bukan 'Semua'
-        $query->when($categoryFilter, function ($q, $categoryFilter) {
-            // Filter berdasarkan relasi. Ini lebih fleksibel.
-            // Asumsi $categoryFilter adalah slug atau nama kategori.
-            return $q->whereHas('category', function ($categoryQuery) use ($categoryFilter) {
-                $categoryQuery->where('slug', $categoryFilter); // Lebih baik pakai slug
-                // atau $categoryQuery->where('name', $categoryFilter);
+        // Jika ada filter kategori
+        if (!empty($categoryFilter)) {
+            $query->whereHas('category', function ($q) use ($categoryFilter) {
+                // Cek apakah categoryFilter adalah ID atau slug
+                if (is_numeric($categoryFilter)) {
+                    $q->where('id', $categoryFilter);
+                } else {
+                    $q->where('slug', $categoryFilter)
+                      ->orWhere('name', $categoryFilter);
+                }
             });
-        });
+        }
 
-        // Ambil semua kategori untuk ditampilkan di dropdown filter
+        // Ambil semua kategori untuk sidebar/dropdown
         $categories = Category::all();
 
-        // Eksekusi query: ambil hasilnya, urutkan dari yang terbaru, dan gunakan paginasi
-        // Paginasi sangat penting untuk performa
+        // Ambil produk dengan paginasi
         $products = $query->latest()->paginate(12)->withQueryString();
 
-        // Kirim data ke view
+        // Kirim data ke view index
         return view('index', [
             'products' => $products,
             'categories' => $categories,
             'currentCategory' => $categoryFilter,
-            'currentSearch' => $search
+            'currentSearch' => $search,
         ]);
     }
 
     public function show($id)
     {
-        return view('products.index', ['product' => Product::findOrFail($id)]);
+        $product = Product::with('category')->findOrFail($id);
+        return view('products.index', compact('product'));
+    }
+
+    // Tambahan: Halaman kategori langsung (untuk route /kategori/{slug})
+    public function category($slug)
+    {
+        $category = Category::where('slug', $slug)->firstOrFail();
+
+        $products = Product::where('category_id', $category->id)
+            ->where('is_active', true)
+            ->latest()
+            ->paginate(12);
+
+        $categories = Category::all();
+
+        return view('category.show', [
+            'category' => $category,
+            'products' => $products,
+            'categories' => $categories,
+            'currentCategory' => $category->slug,
+            'currentSearch' => '',
+        ]);
     }
 }

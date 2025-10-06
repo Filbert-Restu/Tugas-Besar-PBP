@@ -18,13 +18,14 @@ use App\Http\Controllers\AdminProductController;
 use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\AdminCategoryController;
 use App\Http\Controllers\AdminUserController;
-
+use App\Models\Order;
 
 // Landing Page & Search
 Route::middleware('main')->group(function () {
     Route::get('/', [MainController::class, 'index'])->name('main');
     Route::get('/products/{id}', [MainController::class, 'show'])->name('main.show');
     Route::get('/search', [SearchController::class, 'index'])->name('search');
+    Route::get('/kategori/{slug}', [MainController::class, 'category'])->name('category.show');
 });
 
 // Jika guest (belum login)
@@ -106,7 +107,14 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:user')->group(function () {
         // user controller
         Route::controller(UserController::class)->group(function () {
-            Route::get('/user/settings', 'index')->name('user.index');
+            Route::get('/user/settings', [UserController::class, 'index'])->name('user.index');
+            Route::get('/user/edit/{id}', [UserController::class, 'edit'])->name('user.edit');
+
+        });
+
+        Route::controller(OrderController::class)->group(function () {
+            Route::get('/orders', 'index')->name('orders.index');
+            Route::get('/orders/{order}', 'show')->name('orders.show');
         });
 
 

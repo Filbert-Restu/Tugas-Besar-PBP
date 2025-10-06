@@ -71,7 +71,7 @@
                 </a>
 
                 {{-- Logout --}}
-                @auth
+                {{-- @auth
                     <form method="POST" action="{{ route('logout') }}" class="hidden md:block">
                         @csrf
                         <button type="submit"
@@ -83,7 +83,7 @@
                             <span>Logout</span>
                         </button>
                     </form>
-                @endauth
+                @endauth --}}
 
                 {{-- Tombol Menu Mobile --}}
                 <div class="md:hidden">
@@ -123,7 +123,7 @@
                     class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800">Promo</a>
 
                 {{-- Logout di menu mobile --}}
-                @auth
+                {{-- @auth
                     <form method="POST" action="{{ route('logout') }}" class="pl-3 pr-4 py-2">
                         @csrf
                         <button type="submit"
@@ -131,7 +131,7 @@
                             Logout
                         </button>
                     </form>
-                @endauth
+                @endauth --}}
             </div>
         </div>
     </div>

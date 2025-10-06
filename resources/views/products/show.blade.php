@@ -9,7 +9,7 @@
 @section('content')
 <div class="max-w-4xl mx-auto bg-white p-6 rounded shadow-md grid grid-cols-1 md:grid-cols-2 gap-6">
     <!-- Gambar -->
-    {{-- <div>
+    <div>
         <img src="{{ $product->image_url ?? 'https://via.placeholder.com/300' }}"
              alt="{{ $product->name }}"
              class="rounded-md shadow-md w-full mb-4">
@@ -17,7 +17,7 @@
             <img src="{{ $product->image_url ?? 'https://via.placeholder.com/100' }}" class="w-20 h-20 object-cover rounded">
             <img src="{{ $product->image_url ?? 'https://via.placeholder.com/100' }}" class="w-20 h-20 object-cover rounded">
         </div>
-    </div>
+    </div> 
 
     <!-- Detail -->
     <div>
@@ -32,7 +32,7 @@
                 + Tambah ke Keranjang
             </button>
         </form>
-    </div> --}}
+    </div>
     <h1>ini detail</h1>
 </div>
 @endsection

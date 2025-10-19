@@ -103,12 +103,12 @@
                                         type="text"
                                         name="name"
                                         value="{{ old('name', Auth::user()->name) }}"
-                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent @error('name') "
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent @error('name') border-red-500 @enderror"
                                         required
                                     >
                                     @error('name')
                                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-
+                                    @enderror
                                 </div>
 
                                 <div>
@@ -117,12 +117,12 @@
                                         type="email"
                                         name="email"
                                         value="{{ old('email', Auth::user()->email) }}"
-                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent @error('email') "
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent @error('email') border-red-500 @enderror"
                                         required
                                     >
                                     @error('email')
                                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-
+                                    @enderror
                                 </div>
 
                                 <div>
@@ -233,12 +233,12 @@
                                     <input
                                         type="password"
                                         name="current_password"
-                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent @error('current_password') "
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent @error('current_password') border-red-500 @enderror"
                                         required
                                     >
                                     @error('current_password')
                                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-
+                                    @enderror
                                 </div>
 
                                 <div>
@@ -246,12 +246,12 @@
                                     <input
                                         type="password"
                                         name="password"
-                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent @error('password') "
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent @error('password') border-red-500 @enderror"
                                         required
                                     >
                                     @error('password')
                                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-
+                                    @enderror
                                 </div>
 
                                 <div>
@@ -282,5 +282,4 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-
 @endsection

@@ -1,0 +1,52 @@
+MIT License
+
+Copyright (c) 2025 Filbert Restu
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+## Educational Purpose Notice
+
+This project is created for educational purposes as part of:
+**Tugas Besar Pemrograman Berbasis Platform (PBP)**
+
+### Usage Terms
+
+- ✅ Free to use for learning
+- ✅ Free to modify and adapt
+- ✅ Free to share with attribution
+- ✅ Can be used as reference for similar projects
+
+### Restrictions
+
+- ⚠️ Not for commercial use without permission
+- ⚠️ Third-party services (Midtrans) have their own terms
+- ⚠️ API keys and credentials are user's responsibility
+
+### Third-Party Services
+
+This project integrates with:
+
+- **Midtrans Payment Gateway** - Subject to Midtrans terms of service
+- **Laravel Framework** - MIT License
+- **Tailwind CSS** - MIT License
+- **Livewire** - MIT License
+
+Please ensure compliance with all third-party service terms.

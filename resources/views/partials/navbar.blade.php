@@ -58,12 +58,8 @@
                     <div class="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition duration-200 z-10">
                         <ul class="py-2 text-sm text-gray-700">
                             <li>
-                                <a href="#"
+                                <a href="{{ route('user.profile') }}"
                                     class="block px-4 py-2 hover:bg-gray-100">Profil Saya</a>
-                            </li>
-                            <li>
-                                <a href="#"
-                                    class="block px-4 py-2 hover:bg-gray-100">Pesanan</a>
                             </li>
                             <li>
                                 <form action="{{ route('logout') }}" method="POST" class="block px-4 py-2 hover:bg-gray-100">

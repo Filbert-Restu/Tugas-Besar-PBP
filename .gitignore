@@ -21,3 +21,20 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+
+# Database (SQLite)
+/database/database.sqlite
+/database/*.sqlite
+/database/*.sqlite-journal
+
+# Logs
+/storage/logs/*.log
+
+# OS Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Package Lock Files (optional - uncomment if needed)
+# package-lock.json
+# composer.lock

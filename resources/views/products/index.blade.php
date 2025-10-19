@@ -8,7 +8,15 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 p-8">
             <!-- Product Image -->
             <div class="items-center justify-center rounded-xl p-2 min-h-[400px]">
-                <img src="{{ asset("bg-waguri1.png") }}" alt="{{ $product->name }}" class="max-w-full max-h-full object-contain m-auto h-3/4 my-1 rounded-2xl">
+                @if($product->image)
+                    <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="max-w-full max-h-full object-contain m-auto h-3/4 my-1 rounded-2xl">
+                @else
+                    <div class="max-w-full h-3/4 my-1 rounded-2xl bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
+                        <svg class="w-32 h-32 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                @endif
                 <div class="text-center">
                     <div class="flex items-center justify-center text-teal-600 mt-4">
                         <i class="fas fa-truck"></i>

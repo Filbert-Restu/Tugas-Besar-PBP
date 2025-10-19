@@ -17,6 +17,11 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->enum('role', ['user', 'admin'])->default('user');
+            $table->string('phone')->nullable();
+            $table->text('address')->nullable();
+            $table->string('city')->nullable();
+            $table->string('province')->nullable();
+            $table->string('postal_code')->nullable();
             $table->timestamps();
         });
     }

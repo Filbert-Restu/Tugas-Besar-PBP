@@ -165,7 +165,15 @@
         <div class="space-y-4">
           @forelse($lowStockProducts as $product)
             <div class="flex items-center gap-3 p-3 bg-[#fdecec] rounded-lg border border-[#e57373]">
-              <img src="{{ $product->image ?? 'https://via.placeholder.com/50' }}" alt="{{ $product->name }}" class="w-12 h-12 rounded object-cover">
+              @if($product->image)
+                <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-12 h-12 rounded object-cover">
+              @else
+                <div class="w-12 h-12 rounded bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center flex-shrink-0">
+                  <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                  </svg>
+                </div>
+              @endif
               <div class="flex-1">
                 <p class="font-semibold text-sm text-gray-800">{{ Str::limit($product->name, 30) }}</p>
                 <p class="text-xs text-[#e57373] font-bold mt-1">Stok: {{ $product->stock }}</p>
@@ -194,7 +202,15 @@
               <div class="w-10 h-10 bg-gradient-to-br from-[#00a37a] to-[#00b385] rounded-full flex items-center justify-center text-white font-bold">
                 {{ $index + 1 }}
               </div>
-              <img src="{{ $product->image ?? 'https://via.placeholder.com/50' }}" alt="{{ $product->name }}" class="w-14 h-14 rounded-lg object-cover">
+              @if($product->image)
+                <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-14 h-14 rounded-lg object-cover">
+              @else
+                <div class="w-14 h-14 rounded-lg bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center flex-shrink-0">
+                  <svg class="w-7 h-7 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                  </svg>
+                </div>
+              @endif
               <div class="flex-1">
                 <p class="font-semibold text-gray-800">{{ Str::limit($product->name, 40) }}</p>
                 <p class="text-sm text-gray-600 mt-1">Terjual: <span class="font-bold text-[#00a37a]">{{ $product->total_sold ?? 0 }}</span></p>

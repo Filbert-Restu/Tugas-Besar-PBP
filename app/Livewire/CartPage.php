@@ -187,9 +187,21 @@ class CartPage extends Component
             return;
         }
 
-        session()->put('checkout_items', $this->selectedItems);
+        // Debug log
+        \Log::info('Checkout called from Livewire', [
+            'selected_items' => $this->selectedItems,
+            'count' => count($this->selectedItems),
+        ]);
 
-        return redirect()->route('checkout.show');
+        session()->put('checkout_items', $this->selectedItems);
+        session()->save(); // Force save
+
+        \Log::info('Session saved', [
+            'session_checkout_items' => session()->get('checkout_items'),
+        ]);
+
+        // Redirect ke halaman alamat (step pertama checkout)
+        return redirect()->route('checkout.address');
     }
 
     public function render()

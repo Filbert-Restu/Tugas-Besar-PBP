@@ -73,10 +73,9 @@ Route::middleware('auth')->group(function () {
             });
 
             // admin categories
-            Route::controller(AdminCategoryController::class)->group(function () {
-                Route::get('/categories', 'index')->name('categories.index');
-
-            });
+            // Route::controller(AdminCategoryController::class)->group(function () {
+            //     Route::get('/categories', 'index')->name('categories.index');
+            // });
 
             // user admin
             Route::controller(UserController::class)->group(function () {
@@ -90,6 +89,10 @@ Route::middleware('auth')->group(function () {
         // user controller
         Route::controller(UserController::class)->group(function () {
             Route::get('/user/settings', 'index')->name('user.index');
+            Route::get('/user/profile', 'profile')->name('user.profile');
+            Route::put('/user/profile', 'updateProfile')->name('user.profile.update');
+            Route::put('/user/address', 'updateAddress')->name('user.address.update');
+            Route::put('/user/password', 'updatePassword')->name('user.password.update');
         });
 
         Route::get('/cart', CartPage::class)->name('cart.index');
@@ -106,13 +109,87 @@ Route::middleware('auth')->group(function () {
             Route::post('/checkout/process', [OrderController::class, 'processCheckout'])->name('cart.checkout.process');
         });
 
-        // Checkout Routes
+        // Checkout Routes (alur: cart → address → review → payment)
+        Route::get('/checkout/address', [CheckoutController::class, 'address'])->name('checkout.address');
+        Route::post('/checkout/address', [CheckoutController::class, 'storeAddress'])->name('checkout.address.store');
         Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout.show');
         Route::get('/checkout/payment', [CheckoutController::class, 'payment'])->name('checkout.payment');
         Route::post('/checkout/process', [CheckoutController::class, 'process'])->name('checkout.process');
         Route::get('/checkout/cancel', [CheckoutController::class, 'cancel'])->name('checkout.cancel');
 
+        // Midtrans Callback (can be accessed without auth for webhooks)
+        Route::post('/midtrans/callback', [CheckoutController::class, 'callback'])->name('midtrans.callback')->withoutMiddleware(['auth']);
+
         // Route Order Detail (opsional, untuk melihat order yang dibuat)
         Route::get('/order/{order}', [OrderController::class, 'show'])->name('order.show');
     });
+});
+
+// Test Midtrans Connection
+Route::get('/test-midtrans', function() {
+    try {
+        \Midtrans\Config::$serverKey = config('midtrans.server_key');
+        \Midtrans\Config::$isProduction = config('midtrans.is_production');
+        \Midtrans\Config::$isSanitized = config('midtrans.is_sanitized');
+        \Midtrans\Config::$is3ds = config('midtrans.is_3ds');
+
+        // Fix SSL certificate issue
+        // PENTING: Set sebagai array kosong dulu, baru tambahkan SSL options
+        if (!is_array(\Midtrans\Config::$curlOptions)) {
+            \Midtrans\Config::$curlOptions = [];
+        }
+
+        \Midtrans\Config::$curlOptions[CURLOPT_SSL_VERIFYHOST] = 0;
+        \Midtrans\Config::$curlOptions[CURLOPT_SSL_VERIFYPEER] = 0;
+
+        // Cek config
+        $config = [
+            'server_key' => config('midtrans.server_key') ? substr(config('midtrans.server_key'), 0, 20) . '...' : 'NOT SET',
+            'client_key' => config('midtrans.client_key') ? substr(config('midtrans.client_key'), 0, 20) . '...' : 'NOT SET',
+            'is_production' => config('midtrans.is_production') ? 'true' : 'false',
+            'is_sanitized' => config('midtrans.is_sanitized') ? 'true' : 'false',
+            'is_3ds' => config('midtrans.is_3ds') ? 'true' : 'false',
+        ];
+
+        $params = [
+            'transaction_details' => [
+                'order_id' => 'TEST-' . time(),
+                'gross_amount' => 10000
+            ],
+            'customer_details' => [
+                'first_name' => 'Test User',
+                'email' => 'test@example.com',
+                'phone' => '08123456789',
+            ],
+            'item_details' => [
+                [
+                    'id' => 'TEST-ITEM',
+                    'price' => 10000,
+                    'quantity' => 1,
+                    'name' => 'Test Product'
+                ]
+            ]
+        ];
+
+        $snapToken = \Midtrans\Snap::getSnapToken($params);
+
+        return response()->json([
+            'status' => 'SUCCESS ✅',
+            'message' => 'Midtrans berfungsi dengan baik!',
+            'snap_token' => $snapToken,
+            'config' => $config,
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'ERROR ❌',
+            'message' => $e->getMessage(),
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
+            'trace' => explode("\n", $e->getTraceAsString())[0] ?? 'No trace',
+            'config' => [
+                'server_key_set' => config('midtrans.server_key') ? 'Yes' : 'No',
+                'client_key_set' => config('midtrans.client_key') ? 'Yes' : 'No',
+            ]
+        ], 500);
+    }
 });

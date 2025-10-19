@@ -9,17 +9,28 @@
   --font-sans: 'Poppins', ui-sans-serif, system-ui, sans-serif,
     'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 
-  --color-primary-50: #e6f4f1;
-  --color-primary-100: #c2e6db;
-  --color-primary-200: #8fd3c3;
-  --color-primary-300: #5bcfab;
-  --color-primary-400: #2cbf93;
-  --color-primary-500: #00a37a;
-  --color-primary-600: #008765;
-  --color-primary-700: #006b51;
-  --color-primary-800: #004f3c;
-  --color-primary-900: #003326;
+  /* === Warna Status === */
+  --color-success: #00a37a;
+  --color-success-light: #e6f4f1;
+  --color-pending: #f5d46b;
+  --color-pending-light: #fff9e6;
+  --color-error: #e57373;
+  --color-error-light: #fdecec;
+  --color-info: #6bb5f5;
+  --color-info-light: #e6f3ff;
+  --color-review: #f1a85b;
+  --color-inactive: #c7d7ca;
+}
 
-  --color-secondary: #ff6b6b;
-  --color-accent: #ffd93d;
+/* Hilangkan spinner di Chrome, Safari, Edge, dan Opera */
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0;
+}
+
+/* Hilangkan spinner di Firefox */
+input[type='number'] {
+  -moz-appearance: textfield !important;
+  appearance: textfield !important;
 }

@@ -18,18 +18,47 @@ class CartController extends Controller
         return view('cart.index', compact('cart', 'items'));
     }
 
-
     public function add(Request $request, Product $product) {
+        $qty = $request->input('quantity', 1);
         $cart = Auth::user()->cart;
 
         $existingItem = $cart->items()->where('product_id', $product->id)->first();
 
         if ($existingItem) {
-            $existingItem->increment('qty');
+            $existingItem->increment('qty', $qty);
         } else {
             $cart->items()->create([
                 'product_id' => $product->id,
-                'qty' => 1,
+                'qty' => $qty,
+            ]);
+        }
+
+        // Return JSON untuk AJAX dengan data lengkap cart
+        if ($request->wantsJson()) {
+            $items = $cart->items()->with('product')->get();
+            $totalPrice = $items->sum(function($item) {
+                return $item->product->price * $item->qty;
+            });
+
+            return response()->json([
+                'success' => true,
+                'items' => $items->map(function($item) {
+                    return [
+                        'id' => $item->id,
+                        'product_id' => $item->product_id,
+                        'qty' => $item->qty,
+                        'product' => [
+                            'id' => $item->product->id,
+                            'name' => $item->product->name,
+                            'price' => $item->product->price,
+                            'price_formatted' => 'Rp' . number_format($item->product->price, 0, ',', '.'),
+                            'image' => $item->product->image,
+                        ]
+                    ];
+                }),
+                'total' => $totalPrice,
+                'total_formatted' => 'Rp' . number_format($totalPrice, 0, ',', '.'),
+                'message' => 'Produk berhasil ditambahkan ke keranjang!'
             ]);
         }
 
@@ -37,37 +66,146 @@ class CartController extends Controller
     }
 
     // Mengurangi qty produk di keranjang
-    public function reduce(Product $product){
+    public function reduce(Request $request, Product $product){
         $cart = Cart::where('user_id', Auth::id())->first();
+
         if ($cart) {
             $item = $cart->items()->where('product_id', $product->id)->first();
+
             if ($item) {
                 if ($item->qty > 1) {
                     $item->decrement('qty');
                 } else {
                     $item->delete();
                 }
+
+                // Return JSON untuk AJAX dengan data lengkap cart
+                if ($request->wantsJson()) {
+                    $items = $cart->items()->with('product')->get();
+                    $totalPrice = $items->sum(function($i) {
+                        return $i->product->price * $i->qty;
+                    });
+
+                    return response()->json([
+                        'success' => true,
+                        'items' => $items->map(function($item) {
+                            return [
+                                'id' => $item->id,
+                                'product_id' => $item->product_id,
+                                'qty' => $item->qty,
+                                'product' => [
+                                    'id' => $item->product->id,
+                                    'name' => $item->product->name,
+                                    'price' => $item->product->price,
+                                    'price_formatted' => 'Rp' . number_format($item->product->price, 0, ',', '.'),
+                                    'image' => $item->product->image,
+                                ]
+                            ];
+                        }),
+                        'total' => $totalPrice,
+                        'total_formatted' => 'Rp' . number_format($totalPrice, 0, ',', '.'),
+                        'message' => 'Produk berhasil dikurangi dari keranjang'
+                    ]);
+                }
             }
         }
+
         return back()->with('success', 'Produk berhasil dikurangi dari keranjang');
     }
 
-    public function remove(Product $product) {
+    public function remove(Request $request, Product $product) {
         $cart = Cart::where('user_id', Auth::id())->first();
+
         if ($cart) {
             $cart->items()->where('product_id', $product->id)->delete();
+
+            // Return JSON untuk AJAX dengan data lengkap cart
+            if ($request->wantsJson()) {
+                $items = $cart->items()->with('product')->get();
+                $totalPrice = $items->sum(function($i) {
+                    return $i->product->price * $i->qty;
+                });
+
+                return response()->json([
+                    'success' => true,
+                    'items' => $items->map(function($item) {
+                        return [
+                            'id' => $item->id,
+                            'product_id' => $item->product_id,
+                            'qty' => $item->qty,
+                            'product' => [
+                                'id' => $item->product->id,
+                                'name' => $item->product->name,
+                                'price' => $item->product->price,
+                                'price_formatted' => 'Rp' . number_format($item->product->price, 0, ',', '.'),
+                                'image' => $item->product->image,
+                            ]
+                        ];
+                    }),
+                    'total' => $totalPrice,
+                    'total_formatted' => 'Rp' . number_format($totalPrice, 0, ',', '.'),
+                    'message' => 'Produk dihapus dari keranjang'
+                ]);
+            }
         }
+
         return back()->with('success', 'Produk dihapus dari keranjang');
     }
 
-
     public function checkout(Request $request) {
-        // ambil items di cart sesuai request id, ambil beberapa atribut saja
-        $CheckoutItems = CartItem::with('product:id,name,price')
-            ->whereIn('id', $request->input('items', []))
-            ->get(['id', 'name', 'product_id', 'qty']);
+        // Pastikan user sudah login
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
 
-        return view('checkout', compact('CheckoutItems'));
+        // Ambil selected items dari session
+        $selectedItemIds = session()->get('checkout_items');
+
+        if (!$selectedItemIds || !is_array($selectedItemIds) || count($selectedItemIds) === 0) {
+            return redirect()->route('cart')->with('error', 'Tidak ada item untuk checkout');
+        }
+
+        // Ambil user cart
+        $userCart = Cart::where('user_id', Auth::id())->first();
+
+        if (!$userCart) {
+            return redirect()->route('cart')->with('error', 'Keranjang tidak ditemukan');
+        }
+
+        // Query item dengan validasi
+        $CheckoutItems = CartItem::with('product')
+            ->whereIn('id', $selectedItemIds)
+            ->where('cart_id', $userCart->id)
+            ->get();
+
+        if ($CheckoutItems->isEmpty()) {
+            return redirect()->route('cart')->with('error', 'Item checkout tidak ditemukan');
+        }
+
+        // Validasi stok untuk semua item
+        foreach ($CheckoutItems as $item) {
+            if (!$item->product || $item->product->stock < $item->qty) {
+                return redirect()->route('cart')->with('error',
+                    'Stok tidak cukup untuk: ' . ($item->product->name ?? 'Produk Tidak Tersedia'));
+            }
+        }
+
+        // Hitung total
+        $subtotal = $CheckoutItems->sum(function ($item) {
+            return $item->product->price * $item->qty;
+        });
+
+        $taxPercent = 10;
+        $tax = round($subtotal * ($taxPercent / 100), 2);
+        $total = $subtotal + $tax;
+
+        return view('cart.checkout', [
+            'CheckoutItems' => $CheckoutItems,
+            'subtotal' => $subtotal,
+            'tax' => $tax,
+            'taxPercent' => $taxPercent,
+            'total' => $total,
+        ]);
     }
 
 

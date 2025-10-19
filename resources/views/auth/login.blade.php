@@ -20,15 +20,15 @@
             <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-green-600 to-emerald-600 rounded-2xl shadow-xl mb-4">
                 <span class="text-white font-bold text-3xl">K</span>
             </div>
-            <h1 class="text-3xl font-bold text-gray-800 mb-2">KlikMart Admin</h1>
-            <p class="text-gray-600">Masuk ke dashboard Anda</p>
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">KlikMart</h1>
+            <p class="text-gray-600">Masuk ke akun Anda</p>
         </div>
 
         <!-- Login Card -->
         <div class="bg-white rounded-2xl shadow-2xl p-8 border border-gray-100 relative overflow-hidden">
             <!-- Decorative corner -->
             <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-green-100 to-emerald-100 rounded-bl-full opacity-50"></div>
-            
+
             <div class="relative">
                 <h2 class="text-2xl font-bold text-gray-800 mb-6">Selamat Datang Kembali!</h2>
 

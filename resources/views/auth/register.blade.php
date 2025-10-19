@@ -21,7 +21,7 @@
                 <span class="text-white font-bold text-3xl">K</span>
             </div>
             <h1 class="text-3xl font-bold text-gray-800 mb-2">Bergabung dengan KlikMart</h1>
-            <p class="text-gray-600">Buat akun admin Anda sekarang</p>
+            <p class="text-gray-600">Daftar sekarang</p>
         </div>
 
         <!-- Register Card -->

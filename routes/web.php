@@ -1,4 +1,6 @@
 <?php
+// livewire
+use App\Livewire\CartPage;
 
 // Main Controller
 use Illuminate\Support\Facades\Route;
@@ -11,6 +13,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CheckoutController;
 
 // Admin Controller
 // use App\Http\Controllers\AdminCategoryController;
@@ -52,14 +55,21 @@ Route::middleware('auth')->group(function () {
             Route::controller(AdminProductController::class)->group(function () {
                 Route::get('/products', 'index')->name('products.index');
                 Route::get('/products/add', 'create')->name('products.add');
+                Route::post('/products', 'store')->name('products.store');
+                Route::get('/products/{product}/edit', 'edit')->name('products.edit');
+                Route::put('/products/{product}', 'update')->name('products.update');
+                Route::delete('/products/{product}', 'destroy')->name('products.destroy');
             });
 
 
             // order admin
             Route::controller(AdminOrderController::class)->group(function () {
                 Route::get('/orders', 'index')->name('orders.index');
-
-                Route::patch('/orders/{order}/status', 'updateStatus')->name('orders.updateStatus');
+                Route::get('/orders/{id}', 'show')->name('orders.show');
+                Route::put('/orders/{id}/status', 'updateStatus')->name('orders.updateStatus');
+                Route::delete('/orders/{id}', 'destroy')->name('orders.destroy');
+                Route::get('/orders/export', 'exportOrders')->name('orders.export');
+                Route::post('/orders/bulk-update', 'bulkUpdateStatus')->name('orders.bulkUpdate');
             });
 
             // admin categories
@@ -82,10 +92,9 @@ Route::middleware('auth')->group(function () {
             Route::get('/user/settings', 'index')->name('user.index');
         });
 
+        Route::get('/cart', CartPage::class)->name('cart.index');
 
-        // cart controller
         Route::controller(CartController::class)->group(function () {
-            Route::get('/cart', 'index')->name('cart.index');
             Route::post('/cart/add/{product}', 'add')->name('cart.add');
             Route::post('/cart/reduce/{product}', 'reduce')->name('cart.reduce');
             Route::delete('/cart/remove/{product}', 'remove')->name('cart.remove');
@@ -96,5 +105,14 @@ Route::middleware('auth')->group(function () {
             Route::get('cart/checkout/shipping', [OrderController::class, 'shipping'])->name('cart.checkout.shipping');
             Route::post('/checkout/process', [OrderController::class, 'processCheckout'])->name('cart.checkout.process');
         });
+
+        // Checkout Routes
+        Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout.show');
+        Route::get('/checkout/payment', [CheckoutController::class, 'payment'])->name('checkout.payment');
+        Route::post('/checkout/process', [CheckoutController::class, 'process'])->name('checkout.process');
+        Route::get('/checkout/cancel', [CheckoutController::class, 'cancel'])->name('checkout.cancel');
+
+        // Route Order Detail (opsional, untuk melihat order yang dibuat)
+        Route::get('/order/{order}', [OrderController::class, 'show'])->name('order.show');
     });
 });

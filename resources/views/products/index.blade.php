@@ -7,10 +7,10 @@
     <div class="bg-white rounded-xl shadow-sm overflow-hidden">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 p-8">
             <!-- Product Image -->
-            <div class="flex items-center justify-center bg-gradient-to-br {{ $product->gradient }} rounded-xl p-12 min-h-[400px]">
+            <div class="items-center justify-center rounded-xl p-2 min-h-[400px]">
+                <img src="{{ asset("bg-waguri1.png") }}" alt="{{ $product->name }}" class="max-w-full max-h-full object-contain m-auto h-3/4 my-1 rounded-2xl">
                 <div class="text-center">
-                    <i class="fas {{ $product->icon }} text-8xl {{ $product->icon_color }} mb-4"></i>
-                    <div class="flex items-center justify-center space-x-2 text-teal-600 mt-4">
+                    <div class="flex items-center justify-center text-teal-600 mt-4">
                         <i class="fas fa-truck"></i>
                         <span class="text-sm font-semibold">Pengiriman Gratis</span>
                     </div>
@@ -28,14 +28,28 @@
 
                     <div class="space-y-4 mb-6">
                         <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Kuantitas</label>
-                            <div class="flex items-center space-x-2">
-                                <button type="button" onclick="decreaseQuantity()" class="w-9 h-9 rounded-lg border border-gray-300 hover:border-teal-500 hover:text-teal-500 transition flex items-center justify-center">
-                                    <i class="fas fa-minus text-xs"></i>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Jumlah</label>
+                            <div class="flex items-center space-x-1">
+                                <button type="button"
+                                    class="w-7 h-7 flex items-center justify-center bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition text-sm"
+                                    onclick="updateQuantity(-1)">
+                                    -
                                 </button>
-                                <input type="number" name="quantity" id="quantity" value="1" min="1" class="w-16 text-center border border-gray-300 rounded-lg py-2 focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500">
-                                <button type="button" onclick="increaseQuantity()" class="w-9 h-9 rounded-lg border border-gray-300 hover:border-teal-500 hover:text-teal-500 transition flex items-center justify-center">
-                                    <i class="fas fa-plus text-xs"></i>
+
+                                <input
+                                    type="number"
+                                    name="quantity"
+                                    id="quantity"
+                                    value="1"
+                                    min="1"
+                                    class="w-9 h-7 text-center border border-gray-300 rounded focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 text-sm"
+                                    style="-webkit-appearance: none; -moz-appearance: textfield; appearance: textfield;"
+                                >
+
+                                <button type="button"
+                                    class="w-7 h-7 flex items-center justify-center bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition text-sm"
+                                    onclick="updateQuantity(1)">
+                                    +
                                 </button>
                             </div>
                         </div>
@@ -72,16 +86,11 @@
 </div>
 
 <script>
-function increaseQuantity() {
+function updateQuantity(delta) {
     const input = document.getElementById('quantity');
-    input.value = parseInt(input.value) + 1;
-}
-
-function decreaseQuantity() {
-    const input = document.getElementById('quantity');
-    if (parseInt(input.value) > 1) {
-        input.value = parseInt(input.value) - 1;
-    }
+    let value = parseInt(input.value) || 1;
+    value = Math.max(1, value + delta);
+    input.value = value;
 }
 </script>
 @endsection

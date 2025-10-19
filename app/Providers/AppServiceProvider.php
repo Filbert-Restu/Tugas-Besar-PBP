@@ -35,16 +35,17 @@ class AppServiceProvider extends ServiceProvider
         View::composer('*', function ($view) {
             // Inisialisasi variabel untuk jumlah item di keranjang
             $userCartQty = 0;
+
             if (Auth::check()) {
                 $userCartQty = DB::table('carts')
                     ->join('cart_items', 'carts.id', '=', 'cart_items.cart_id')
-                    ->where('carts.user_id', Auth::id()) // <-- KONDISI PENTING YANG HILANG
-                    ->where('carts.status', 'active') // Ini opsional, tergantung logika bisnis Anda
+                    ->where('carts.user_id', Auth::id())
+                    ->where('carts.status', 'active') // Hanya cart dengan status active
                     ->sum('cart_items.qty');
-
-                // Gunakan nama variabel yang lebih deskriptif
-                $view->with('userCartQty', $userCartQty);
             }
+
+            // Share variable ke semua views
+            $view->with('userCartQty', $userCartQty);
         });
     }
 }

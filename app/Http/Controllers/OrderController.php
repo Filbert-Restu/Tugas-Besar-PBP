@@ -80,4 +80,15 @@ class OrderController extends Controller
     {
         return view('cart.shipping');
     }
+
+    public function processCheckout(Request $request)
+    {
+        // Proses checkout di sini (misalnya, simpan data pesanan, proses pembayaran, dll.)
+        // Untuk contoh ini, kita hanya akan mengembalikan pesan sukses.
+
+        // Hapus item checkout dari session setelah proses checkout
+        $request->session()->forget('checkout_items');
+
+        return redirect()->route('cart.index')->with('success', 'Checkout berhasil diproses!');
+    }
 }

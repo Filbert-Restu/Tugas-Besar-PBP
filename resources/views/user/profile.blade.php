@@ -103,7 +103,7 @@
                                         type="text"
                                         name="name"
                                         value="{{ old('name', Auth::user()->name) }}"
-                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent @error('name') border-red-500 @enderror"
+                                        class="w-full px-4 py-3 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent {{ $errors->has('name') ? 'border border-red-500' : 'border border-gray-300' }}"
                                         required
                                     >
                                     @error('name')
@@ -117,7 +117,7 @@
                                         type="email"
                                         name="email"
                                         value="{{ old('email', Auth::user()->email) }}"
-                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent @error('email') border-red-500 @enderror"
+                                        class="w-full px-4 py-3 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent {{ $errors->has('email') ? 'border border-red-500' : 'border border-gray-300' }}"
                                         required
                                     >
                                     @error('email')
@@ -233,7 +233,7 @@
                                     <input
                                         type="password"
                                         name="current_password"
-                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent @error('current_password') border-red-500 @enderror"
+                                        class="w-full px-4 py-3 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent {{ $errors->has('current_password') ? 'border border-red-500' : 'border border-gray-300' }}"
                                         required
                                     >
                                     @error('current_password')
@@ -246,7 +246,7 @@
                                     <input
                                         type="password"
                                         name="password"
-                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent @error('password') border-red-500 @enderror"
+                                        class="w-full px-4 py-3 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent {{ $errors->has('password') ? 'border border-red-500' : 'border border-gray-300' }}"
                                         required
                                     >
                                     @error('password')

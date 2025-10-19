@@ -1,0 +1,346 @@
+================================================================================
+                    CARA MENJALANKAN APLIKASI E-COMMERCE
+                        Setelah Download dari GitHub
+================================================================================
+
+PRASYARAT (Yang Harus Diinstall Dulu):
+- PHP >= 8.2
+- Composer (https://getcomposer.org/)
+- Node.js >= 18 & NPM (https://nodejs.org/)
+- Database: MySQL/MariaDB atau SQLite
+
+================================================================================
+                        LANGKAH-LANGKAH INSTALASI
+================================================================================
+
+STEP 1: CLONE/DOWNLOAD PROJECT
+--------------------------------------------------------------------------------
+   Download project dari GitHub, bisa lewat:
+
+   a. Git Clone:
+      git clone https://github.com/Filbert-Restu/Tugas-Besar-PBP.git
+      cd Tugas-Besar-PBP
+
+   b. Download ZIP:
+      - Download ZIP dari GitHub
+      - Extract ke folder yang diinginkan
+      - Masuk ke folder project
+
+
+STEP 2: INSTALL DEPENDENCIES PHP
+--------------------------------------------------------------------------------
+   Jalankan command ini di terminal/command prompt:
+
+   composer install
+
+   Tunggu sampai selesai download semua package PHP.
+
+
+STEP 3: INSTALL DEPENDENCIES JAVASCRIPT
+--------------------------------------------------------------------------------
+   Jalankan command ini:
+
+   npm install
+
+   Tunggu sampai selesai download semua package Node.js.
+
+
+STEP 4: COPY FILE ENVIRONMENT
+--------------------------------------------------------------------------------
+   a. Copy file .env.example menjadi .env:
+
+      Windows (PowerShell):
+      Copy-Item .env.example .env
+
+      Windows (Command Prompt):
+      copy .env.example .env
+
+      Linux/Mac:
+      cp .env.example .env
+
+
+STEP 5: GENERATE APPLICATION KEY
+--------------------------------------------------------------------------------
+   Jalankan command:
+
+   php artisan key:generate
+
+   Command ini akan mengisi APP_KEY di file .env secara otomatis.
+
+
+STEP 6: KONFIGURASI DATABASE
+--------------------------------------------------------------------------------
+   Buka file .env dengan text editor, pilih salah satu:
+
+   OPSI A - Menggunakan SQLite (Lebih Mudah):
+   ------------------------------------------
+   DB_CONNECTION=sqlite
+   # DB_HOST=127.0.0.1
+   # DB_PORT=3306
+   # DB_DATABASE=laravel
+   # DB_USERNAME=root
+   # DB_PASSWORD=
+
+   Lalu buat file database kosong:
+   Windows (PowerShell):
+   New-Item database\database.sqlite -ItemType File
+
+   Windows (Command Prompt):
+   type nul > database\database.sqlite
+
+   Linux/Mac:
+   touch database/database.sqlite
+
+
+   OPSI B - Menggunakan MySQL/MariaDB:
+   ------------------------------------
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=nama_database_anda
+   DB_USERNAME=root
+   DB_PASSWORD=password_anda
+
+   NOTE: Pastikan sudah membuat database di MySQL terlebih dahulu!
+
+
+STEP 7: KONFIGURASI MIDTRANS (PAYMENT GATEWAY)
+--------------------------------------------------------------------------------
+   Buka file .env, isi dengan kredensial Midtrans Anda:
+
+   MIDTRANS_SERVER_KEY=your_midtrans_server_key_here
+   MIDTRANS_CLIENT_KEY=your_midtrans_client_key_here
+   MIDTRANS_IS_PRODUCTION=false
+   MIDTRANS_IS_SANITIZED=true
+   MIDTRANS_IS_3DS=true
+
+   Dapatkan key dari: https://dashboard.midtrans.com/
+   (Gunakan Sandbox untuk testing)
+
+
+STEP 8: JALANKAN MIGRATION & SEEDER
+--------------------------------------------------------------------------------
+   Jalankan command untuk membuat tabel dan isi data dummy:
+
+   php artisan migrate:fresh --seed
+
+   Command ini akan:
+   - Membuat semua tabel database
+   - Mengisi data dummy (admin, user, produk, kategori)
+
+   JIKA ADA ERROR:
+   - Pastikan konfigurasi database di .env sudah benar
+   - Pastikan database sudah dibuat (untuk MySQL)
+   - Pastikan file database.sqlite sudah dibuat (untuk SQLite)
+
+
+STEP 9: LINK STORAGE (UNTUK GAMBAR PRODUK)
+--------------------------------------------------------------------------------
+   Jalankan command:
+
+   php artisan storage:link
+
+   Command ini membuat symbolic link dari storage/app/public ke public/storage
+
+
+STEP 10: BUILD ASSETS (CSS & JAVASCRIPT)
+--------------------------------------------------------------------------------
+   Jalankan salah satu command:
+
+   a. Untuk Development (dengan auto-reload):
+      npm run dev
+
+   b. Untuk Production (optimize):
+      npm run build
+
+
+STEP 11: JALANKAN SERVER LARAVEL
+--------------------------------------------------------------------------------
+   Buka terminal/command prompt BARU, lalu jalankan:
+
+   php artisan serve
+
+   Server akan berjalan di: http://127.0.0.1:8000
+
+   ATAU bisa custom port:
+   php artisan serve --port=8080
+
+
+STEP 12: AKSES APLIKASI
+--------------------------------------------------------------------------------
+   Buka browser dan akses:
+
+   http://127.0.0.1:8000
+
+   atau
+
+   http://localhost:8000
+
+
+================================================================================
+                            AKUN DEFAULT UNTUK LOGIN
+================================================================================
+
+ADMIN:
+------
+Email    : admin@example.com
+Password : admin123
+
+USER:
+-----
+Email    : user@example.com
+Password : admin123
+
+NOTE: Password bisa diubah setelah login di halaman profil
+
+
+================================================================================
+                            TROUBLESHOOTING
+================================================================================
+
+PROBLEM 1: Error "composer: command not found"
+SOLUSI   : Install Composer dari https://getcomposer.org/
+
+PROBLEM 2: Error "npm: command not found"
+SOLUSI   : Install Node.js dari https://nodejs.org/
+
+PROBLEM 3: Error "SQLSTATE[HY000] [2002] Connection refused"
+SOLUSI   :
+   - Pastikan MySQL/MariaDB service sudah berjalan
+   - Periksa DB_HOST, DB_PORT, DB_USERNAME, DB_PASSWORD di .env
+   - Atau gunakan SQLite (lebih mudah)
+
+PROBLEM 4: Error "key:generate" - No supported encrypter found
+SOLUSI   : Pastikan sudah copy .env.example ke .env
+
+PROBLEM 5: Halaman 404 Not Found
+SOLUSI   :
+   - Pastikan "php artisan serve" masih berjalan
+   - Akses http://127.0.0.1:8000 bukan http://localhost/project
+
+PROBLEM 6: CSS tidak muncul / tampilan berantakan
+SOLUSI   :
+   - Jalankan: npm run build
+   - Atau jalankan: npm run dev (dan biarkan berjalan)
+   - Refresh browser dengan Ctrl+Shift+R (hard refresh)
+
+PROBLEM 7: Error migration "duplicate column name"
+SOLUSI   :
+   - Jalankan: php artisan migrate:fresh --seed
+   - Atau hapus database dan buat ulang
+
+PROBLEM 8: Error "Class 'ZipArchive' not found"
+SOLUSI   :
+   - Windows: Aktifkan extension=zip di php.ini
+   - Linux: sudo apt-get install php-zip
+   - Mac: brew install php-zip
+
+PROBLEM 9: Port 8000 sudah digunakan
+SOLUSI   :
+   - Gunakan port lain: php artisan serve --port=8080
+   - Atau matikan aplikasi yang menggunakan port 8000
+
+
+================================================================================
+                        COMMAND BERGUNA LAINNYA
+================================================================================
+
+Membersihkan cache:
+   php artisan cache:clear
+   php artisan config:clear
+   php artisan route:clear
+   php artisan view:clear
+
+Membuat database baru (drop semua tabel):
+   php artisan migrate:fresh
+
+Membuat database baru dengan data dummy:
+   php artisan migrate:fresh --seed
+
+Melihat daftar route:
+   php artisan route:list
+
+Melihat versi Laravel:
+   php artisan --version
+
+Update dependencies:
+   composer update
+   npm update
+
+
+================================================================================
+                            STRUKTUR PROJECT
+================================================================================
+
+app/                    - Logic aplikasi (Controllers, Models)
+config/                 - File konfigurasi
+database/
+  ├── migrations/       - File migration (struktur database)
+  └── seeders/          - File seeder (data dummy)
+public/                 - File public (index.php, assets)
+resources/
+  ├── css/              - File CSS (Tailwind)
+  ├── js/               - File JavaScript
+  └── views/            - File Blade template (tampilan)
+routes/
+  └── web.php           - Definisi route aplikasi
+storage/                - File storage (logs, cache, uploads)
+.env                    - File environment (JANGAN di-commit!)
+composer.json           - Dependencies PHP
+package.json            - Dependencies JavaScript
+
+
+================================================================================
+                        MENJALANKAN UNTUK PRODUCTION
+================================================================================
+
+1. Set environment production di .env:
+   APP_ENV=production
+   APP_DEBUG=false
+
+2. Optimize Laravel:
+   php artisan config:cache
+   php artisan route:cache
+   php artisan view:cache
+
+3. Build assets production:
+   npm run build
+
+4. Set permission storage & bootstrap/cache:
+   chmod -R 775 storage bootstrap/cache
+
+5. Gunakan web server production (Apache/Nginx) bukan "php artisan serve"
+
+
+================================================================================
+                            RESOURCES & LINKS
+================================================================================
+
+GitHub Repository:
+   https://github.com/Filbert-Restu/Tugas-Besar-PBP
+
+Dokumentasi Laravel:
+   https://laravel.com/docs/11.x
+
+Dokumentasi Tailwind CSS:
+   https://tailwindcss.com/docs
+
+Midtrans Documentation:
+   https://docs.midtrans.com/
+
+
+================================================================================
+                            CONTACT & SUPPORT
+================================================================================
+
+Jika ada masalah atau pertanyaan:
+- Buka issue di GitHub repository
+- Hubungi tim developer
+- Baca dokumentasi di folder docs/
+
+
+================================================================================
+Last Updated: October 19, 2025
+Laravel Version: 11.x
+By: Filbert Restu
+================================================================================

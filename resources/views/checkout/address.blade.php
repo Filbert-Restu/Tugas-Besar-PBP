@@ -48,13 +48,8 @@
                     <!-- Kontak Section -->
                     <div class="mb-8">
                         <h2 class="text-xl font-semibold text-gray-800 mb-4">Kontak</h2>
-                        <div class="flex items-center justify-between mb-4">
-                            <span class="text-sm text-gray-600">Apakah anda punya akun?
-                                <a href="{{ route('login') }}" class="text-teal-600 hover:text-teal-700 font-medium">Login</a>
-                            </span>
-                        </div>
 
-                        <div>
+                        <div class="border border-gray-300 rounded-lg">
                             <input
                                 type="text"
                                 name="phone"

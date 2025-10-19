@@ -1,32 +1,20 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alamat Pengiriman - {{ config('app.name') }}</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        .gradient-bg {
-            background: linear-gradient(135deg, #0d9488 0%, #06b6d4 100%);
-        }
-    </style>
-</head>
-<body class="bg-gray-50">
-    <div class="min-h-screen py-8">
-        <div class="max-w-4xl mx-auto px-4">
-            <!-- Header -->
-            <div class="mb-8">
-                <h1 class="text-3xl font-bold text-teal-600 mb-2">KlikMart</h1>
+@extends('layouts.app')
 
-                <!-- Breadcrumb -->
-                <div class="flex items-center gap-2 text-sm text-gray-600">
-                    <a href="{{ route('cart.index') }}" class="hover:text-teal-600">Keranjang</a>
-                    <span>›</span>
-                    <span class="text-teal-600 font-medium">Alamat</span>
-                    <span>›</span>
-                    <span class="text-gray-400">Pengiriman & Pembayaran</span>
-                </div>
+@section('title', 'Alamat Pengiriman')
+
+@section('content')
+<div class="min-h-screen py-8 bg-gray-50">
+    <div class="max-w-4xl mx-auto px-4">
+        <!-- Breadcrumb -->
+        <div class="mb-8">
+            <div class="flex items-center gap-2 text-sm text-gray-600">
+                <a href="{{ route('cart.index') }}" class="hover:text-teal-600">Keranjang</a>
+                <span>›</span>
+                <span class="text-teal-600 font-medium">Alamat</span>
+                <span>›</span>
+                <span class="text-gray-400">Pengiriman & Pembayaran</span>
             </div>
+        </div>
 
             <!-- Alert Messages -->
             @if(session('error'))
@@ -215,7 +203,7 @@
 
                     <button
                         type="submit"
-                        class="gradient-bg text-white px-8 py-3 rounded-lg font-medium hover:shadow-lg transition-all duration-200"
+                        class="bg-gradient-to-r from-teal-600 to-cyan-500 text-white px-8 py-3 rounded-lg font-medium hover:shadow-lg transition-all duration-200"
                     >
                         Pergi ke Pengiriman
                     </button>
@@ -223,5 +211,5 @@
             </form>
         </div>
     </div>
-</body>
-</html>
+</div>
+@endsection

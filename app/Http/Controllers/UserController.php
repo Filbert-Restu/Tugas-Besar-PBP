@@ -86,4 +86,13 @@ class UserController extends Controller
 
         return redirect()->route('user.profile')->with('success', 'Password berhasil diperbarui!');
     }
+
+    /**
+     * Display user orders
+     */
+    public function orders()
+    {
+        $orders = Auth::user()->orders()->with('items.product')->orderBy('created_at', 'desc')->paginate(10);
+        return view('user.orders', compact('orders'));
+    }
 }

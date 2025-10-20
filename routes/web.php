@@ -93,6 +93,7 @@ Route::middleware('auth')->group(function () {
             Route::put('/user/profile', 'updateProfile')->name('user.profile.update');
             Route::put('/user/address', 'updateAddress')->name('user.address.update');
             Route::put('/user/password', 'updatePassword')->name('user.password.update');
+            Route::get('/user/orders', 'orders')->name('user.orders');
         });
 
         Route::get('/cart', CartPage::class)->name('cart.index');

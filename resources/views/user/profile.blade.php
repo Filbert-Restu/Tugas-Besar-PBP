@@ -60,6 +60,22 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Menu Links -->
+                    <div class="mt-6 pt-6 border-t border-gray-200 space-y-2">
+                        <a
+                            href="{{ route('user.profile') }}"
+                            class="block px-4 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('user.profile') ? 'bg-teal-100 text-teal-700' : 'text-gray-700 hover:bg-gray-100' }} transition-colors"
+                        >
+                            👤 Profil
+                        </a>
+                        <a
+                            href="{{ route('user.orders') }}"
+                            class="block px-4 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('user.orders') ? 'bg-teal-100 text-teal-700' : 'text-gray-700 hover:bg-gray-100' }} transition-colors"
+                        >
+                            📦 Pesanan Saya
+                        </a>
+                    </div>
                 </div>
             </div>
 

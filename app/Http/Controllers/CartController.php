@@ -20,7 +20,8 @@ class CartController extends Controller
 
     public function add(Request $request, Product $product) {
         $qty = $request->input('quantity', 1);
-        $cart = Auth::user()->cart;
+        // Buat cart jika belum ada
+        $cart = Cart::firstOrCreate(['user_id' => Auth::id()]);
 
         $existingItem = $cart->items()->where('product_id', $product->id)->first();
 
@@ -162,14 +163,14 @@ class CartController extends Controller
         $selectedItemIds = session()->get('checkout_items');
 
         if (!$selectedItemIds || !is_array($selectedItemIds) || count($selectedItemIds) === 0) {
-            return redirect()->route('cart')->with('error', 'Tidak ada item untuk checkout');
+            return redirect()->route('cart.index')->with('error', 'Tidak ada item untuk checkout');
         }
 
         // Ambil user cart
         $userCart = Cart::where('user_id', Auth::id())->first();
 
         if (!$userCart) {
-            return redirect()->route('cart')->with('error', 'Keranjang tidak ditemukan');
+            return redirect()->route('cart.index')->with('error', 'Keranjang tidak ditemukan');
         }
 
         // Query item dengan validasi
@@ -179,13 +180,13 @@ class CartController extends Controller
             ->get();
 
         if ($CheckoutItems->isEmpty()) {
-            return redirect()->route('cart')->with('error', 'Item checkout tidak ditemukan');
+            return redirect()->route('cart.index')->with('error', 'Item checkout tidak ditemukan');
         }
 
         // Validasi stok untuk semua item
         foreach ($CheckoutItems as $item) {
             if (!$item->product || $item->product->stock < $item->qty) {
-                return redirect()->route('cart')->with('error',
+                return redirect()->route('cart.index')->with('error',
                     'Stok tidak cukup untuk: ' . ($item->product->name ?? 'Produk Tidak Tersedia'));
             }
         }
